@@ -1,12 +1,18 @@
-import { defineConfig, mergeConfig } from 'vite'
-import baseConfig from './vite.base.config'
+import path, { resolve } from 'node:path'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
-// eslint-disable-next-line unused-imports/no-unused-vars
-export default defineConfig(({ mode }) => {
-  return mergeConfig(baseConfig, {
-    build: {
-      outDir: 'dist',
+export default defineConfig(() => {
+  return {
+    resolve: {
+      alias: {
+        '~/': `${resolve(__dirname)}/src/`,
+        '@/': `${path.resolve(__dirname, 'src')}/`,
+      },
     },
-  })
+    build: {
+      chunkSizeWarningLimit: 5000,
+    },
+    plugins: [react()],
+  }
 })
