@@ -1,0 +1,23 @@
+@import './tailwind.css';
+@import './view-transition-api.css';
+@import './scrollbar.css';
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  @apply bg-muted rounded px-1.5 py-0.5 text-xs;
+}

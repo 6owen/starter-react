@@ -1,0 +1,28 @@
+::-webkit-scrollbar {
+  @apply h-2 w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-sm;
+}
+
+html {
+  scrollbar-color: hsl(215.4 16.3% 46.9% / 0.3);
+}
+
+html.dark {
+  scrollbar-color: hsl(215.4 16.3% 56.9% / 0.3);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
