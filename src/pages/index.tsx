@@ -1,4 +1,4 @@
-import { Button } from '@workspace/ui/components/button'
+import { Button } from '@/components/ui/button'
 
 import { useAppStore } from '@/stores'
 
@@ -17,7 +17,7 @@ const featureCards = [
   },
   {
     description:
-      'Shared UI stays in packages/ui, while app-local helpers move into src/libs, src/components, and src/styles.',
+      'UI components and helper methods now live directly inside src/components, src/libs, and src/styles.',
     icon: 'i-solar-layers-outline',
     title: 'Local app structure',
   },
@@ -45,8 +45,8 @@ export default function HomePage() {
           </div>
           <div className="max-w-3xl space-y-3">
             <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-              Your React starter now follows the same directory habits as your
-              Vue starter.
+              Your React starter now follows your preferred single-app
+              directory habits.
             </h2>
             <p className="text-muted-foreground max-w-2xl text-sm leading-7 sm:text-base">
               `typings`, `styles`, `stores`, `setups`, `services`, `routers`,

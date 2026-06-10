@@ -6,8 +6,6 @@
 @import '@fontsource-variable/inter';
 
 @custom-variant dark (&:is(.dark *));
-@source '../../../apps/**/*.{ts,tsx}';
-@source '../../../components/**/*.{ts,tsx}';
 @source '../**/*.{ts,tsx}';
 
 @theme inline {
@@ -126,6 +124,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

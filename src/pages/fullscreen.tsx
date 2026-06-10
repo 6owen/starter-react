@@ -1,4 +1,4 @@
-import { Button } from '@workspace/ui/components/button'
+import { Button } from '@/components/ui/button'
 import { NavLink } from 'react-router-dom'
 
 export default function FullscreenPage() {
