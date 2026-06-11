@@ -10,7 +10,18 @@ export default defineConfig({
   plugins: [
     react(),
     Pages({
-      dirs: 'src/pages',
+      dirs: [
+        {
+          dir: 'src/pages',
+          baseRoute: '',
+          filePattern: '*.tsx',
+        },
+        {
+          dir: 'src/pages',
+          baseRoute: '',
+          filePattern: '**/page.tsx',
+        },
+      ],
       extensions: ['tsx'],
       exclude: ['**/components/**', '**/*.test.*'],
       routeStyle: 'next',

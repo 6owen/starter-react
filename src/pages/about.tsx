@@ -33,7 +33,9 @@ export default function AboutPage() {
             <p className="text-muted-foreground text-sm leading-6">
               Axios setup is now under <code>src/services/request</code>, and
               app-level API entrypoints follow the <code>*Api</code> suffix
-              convention under <code>src/services/api</code>.
+              convention under <code>src/services/api</code>. Route pages can
+              either be top-level files like <code>src/pages/about.tsx</code>,
+              or nested entries like <code>src/pages/home/page.tsx</code>.
             </p>
             <Button onClick={() => toggleExpanded()}>
               <span className="i-solar-alt-arrow-down-outline inline-block size-4" />

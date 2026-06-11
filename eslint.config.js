@@ -1,6 +1,7 @@
 import { arvinn } from '@arvinn/eslint-config'
 
 export default arvinn({
+  tailwindcss: false,
   vue: true,
   pnpm: true,
   unocss: false,

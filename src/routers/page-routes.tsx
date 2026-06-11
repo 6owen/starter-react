@@ -7,6 +7,10 @@ const pageRouteMetaMap: Record<string, AppRouteMeta> = {
     layout: 'default',
     title: 'Home',
   },
+  '/home': {
+    layout: 'default',
+    title: 'Home',
+  },
   '/about': {
     layout: 'default',
     title: 'About',
@@ -43,6 +47,45 @@ function resolveRouteMeta(pathname: string) {
   } satisfies AppRouteMeta
 }
 
+function normalizePageFileRoutes(routes: AppRouteObject[]): AppRouteObject[] {
+  return routes.map(normalizePageFileRoute)
+}
+
+function normalizePageFileRoute(route: AppRouteObject): AppRouteObject {
+  const normalizedChildren = route.children?.map(normalizePageFileRoute)
+
+  if (route.path === 'page' && route.element) {
+    return {
+      ...route,
+      path: '/',
+      children: normalizedChildren,
+    }
+  }
+
+  const pageChild = normalizedChildren?.find((child) => child.path === '/')
+
+  if (!route.element && pageChild?.element) {
+    const remainingChildren = normalizedChildren?.filter(
+      (child) => child !== pageChild,
+    )
+    const mergedChildren = [
+      ...(pageChild.children ?? []),
+      ...(remainingChildren ?? []),
+    ]
+
+    return {
+      ...route,
+      element: pageChild.element,
+      children: mergedChildren.length ? mergedChildren : undefined,
+    }
+  }
+
+  return {
+    ...route,
+    children: normalizedChildren,
+  }
+}
+
 function attachRouteMeta(routes: AppRouteObject[]): AppRouteObject[] {
   return routes.map((route) => {
     const pathname = route.path ?? '/'
@@ -58,4 +101,6 @@ function attachRouteMeta(routes: AppRouteObject[]): AppRouteObject[] {
   })
 }
 
-export const pageRoutes = attachRouteMeta(generatedRoutes as AppRouteObject[])
+export const pageRoutes = attachRouteMeta(
+  normalizePageFileRoutes(generatedRoutes as AppRouteObject[]),
+)

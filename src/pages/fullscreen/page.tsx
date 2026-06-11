@@ -16,8 +16,9 @@ export default function FullscreenPage() {
             `layouts/fullscreen.tsx`.
           </h1>
           <p className="max-w-2xl text-sm leading-7 text-white/70">
-            In this structure, `pages/` still owns the route file, while the
-            layout choice is resolved in the router layer.
+            In this structure, the route entry still lives in
+            <code className="bg-white/10 text-white">pages/**/page.tsx</code>,
+            while layout choice is still resolved in the router layer.
           </p>
         </div>
 
