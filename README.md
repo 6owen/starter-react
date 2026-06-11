@@ -69,6 +69,7 @@
 - `src/styles/global.css`：全局样式总入口
 - `src/styles/scrollbar.css`：滚动条样式
 - `src/styles/view-transition-api.css`：主题切换动效样式
+- 整个项目组件，尽可能的使用 tailwindcss ，避免使用 css 文件，或者外联 css
 
 ## 目录结构（树状注释版）
 
