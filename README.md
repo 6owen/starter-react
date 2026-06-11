@@ -1,6 +1,6 @@
 # Starter React
 
-这是一个基于 `pnpm + Vite + React` 的单应用 Starter，不使用 `turbo`，也不是 monorepo。
+这是一个基于 `pnpm + Vite + React` 的单应用 Starter。
 
 当前项目已经按照你的开发习惯整理好目录约定，重点是先把常用结构搭稳：
 
