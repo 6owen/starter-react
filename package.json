@@ -39,7 +39,7 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@arvinn/eslint-config": "^0.0.15",
+    "@arvinn/eslint-config": "^0.0.16",
     "@arvinn/prettier-config": "^0.0.13",
     "@arvinn/vscode-settings": "^0.0.3",
     "@eslint/js": "^10",

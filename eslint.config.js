@@ -1,25 +1,20 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import { arvinn } from '@arvinn/eslint-config'
 
-export default defineConfig([
-  globalIgnores(['dist', 'src/typings/*.d.ts']),
+export default arvinn({
+  vue: true,
+  pnpm: true,
+  unocss: false,
+}).append(
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
-    languageOptions: {
-      globals: globals.browser,
-    },
+    files: ['src/**/*.ts'],
     rules: {
-      'no-undef': 'off',
+      'perfectionist/sort-objects': 'error',
     },
   },
-])
+  {
+    files: ['**/*.md/*'],
+    rules: {
+      'perfectionist/sort-named-imports': 'off',
+    },
+  },
+)
