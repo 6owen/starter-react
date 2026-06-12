@@ -1,9 +1,8 @@
 import { Moon, Sun } from 'lucide-react'
+import { type ComponentPropsWithoutRef, useCallback, useRef } from 'react'
 import { flushSync } from 'react-dom'
-import { useCallback, useRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
 
-import { cn } from '@/libs/utils'
+import { cn } from '@/lib/utils'
 
 interface AnimatedThemeTogglerProps extends ComponentPropsWithoutRef<'button'> {
   duration?: number

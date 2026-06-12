@@ -26,8 +26,8 @@ export function useAppTheme() {
 
     const observer = new MutationObserver(syncTheme)
     observer.observe(root, {
-      attributes: true,
       attributeFilter: ['class'],
+      attributes: true,
     })
 
     return () => {

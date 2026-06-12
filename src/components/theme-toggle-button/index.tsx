@@ -1,6 +1,7 @@
 import { AnimatedThemeToggler } from './animated-theme-toggler'
 
-import { cn } from '@/libs/utils'
+import { useAppTheme } from '@/composables/use-app-theme'
+import { cn } from '@/lib/utils'
 
 export function ThemeToggleButton({ className }: { className?: string }) {
   const { isDark, toggleTheme } = useAppTheme()

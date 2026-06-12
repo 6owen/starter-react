@@ -1,2 +1,3 @@
 export * from './api'
-export * from './request'
+export * from './http'
+export * from './query-client'

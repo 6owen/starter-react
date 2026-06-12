@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import * as React from 'react'
 
 type Theme = 'dark' | 'light' | 'system'
@@ -85,7 +84,11 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
+    if (typeof window === 'undefined') {
+      return defaultTheme
+    }
+
+    const storedTheme = window.localStorage.getItem(storageKey)
     if (isTheme(storedTheme)) {
       return storedTheme
     }
@@ -112,6 +115,8 @@ export function ThemeProvider({
 
       root.classList.remove('light', 'dark')
       root.classList.add(resolvedTheme)
+      root.dataset.theme = resolvedTheme
+      root.style.colorScheme = resolvedTheme
 
       if (restoreTransitions) {
         restoreTransitions()

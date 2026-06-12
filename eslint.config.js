@@ -7,6 +7,9 @@ export default arvinn({
   unocss: false,
 }).append(
   {
+    ignores: ['src/routeTree.gen.ts'],
+  },
+  {
     files: ['src/**/*.ts'],
     rules: {
       'perfectionist/sort-objects': 'error',
