@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_app/_authed/_admin/admin/users')({
+export const Route = createFileRoute('/_app/_authed/_admin/admin/users/')({
   component: AdminUsersPage,
   head: () => ({
     meta: [{ title: 'Admin Users | Starter React' }],

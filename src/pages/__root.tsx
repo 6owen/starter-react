@@ -41,7 +41,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             {error.message}
           </p>
           <Button asChild>
-            <Link to="/">Return Home</Link>
+            <Link to="/home">Return Home</Link>
           </Button>
         </div>
       </section>
@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             The TanStack route tree could not match the current URL.
           </p>
           <Button asChild>
-            <Link to="/">Return Home</Link>
+            <Link to="/home">Return Home</Link>
           </Button>
         </div>
       </section>

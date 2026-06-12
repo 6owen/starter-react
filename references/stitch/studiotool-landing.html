@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudioTool — Simplify your creative feedback loop.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&amp;family=Crimson+Pro:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#858383",
+                    "surface-bright": "#f9f9f9",
+                    "on-background": "#1a1c1c",
+                    "tertiary-fixed": "#bfedd4",
+                    "error-container": "#ffdad6",
+                    "warm-blur": "#F6F4F0",
+                    "surface-tint": "#5f5e5e",
+                    "secondary-fixed": "#e2e2e2",
+                    "approval-green": "#547E69",
+                    "outline-variant": "#c4c7c7",
+                    "primary-fixed": "#e5e2e1",
+                    "on-secondary-container": "#5f6161",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "on-surface-variant": "#444748",
+                    "outline": "#747878",
+                    "on-tertiary-container": "#628d77",
+                    "ink": "#1A1A1A",
+                    "on-surface": "#1a1c1c",
+                    "pure-surface": "#FFFFFF",
+                    "tertiary-fixed-dim": "#a4d0b8",
+                    "inverse-on-surface": "#f0f1f1",
+                    "primary-container": "#1c1b1b",
+                    "surface-container-high": "#e8e8e8",
+                    "surface-dim": "#dadada",
+                    "on-tertiary-fixed": "#002114",
+                    "background": "#f9f9f9",
+                    "tertiary-container": "#002114",
+                    "secondary": "#5d5f5f",
+                    "surface-container": "#eeeeee",
+                    "surface-container-low": "#f3f3f4",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-primary-fixed-variant": "#474746",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-fixed-variant": "#254e3c",
+                    "tertiary": "#000000",
+                    "inverse-primary": "#c8c6c5",
+                    "surface-container-highest": "#e2e2e2",
+                    "secondary-container": "#dcdddd",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "soft-utility": "#F6F6F6",
+                    "on-error": "#ffffff",
+                    "surface": "#f9f9f9",
+                    "strong-utility": "#ECECEC",
+                    "muted-text": "rgba(26, 26, 26, 0.65)",
+                    "primary": "#000000",
+                    "inverse-surface": "#2f3131",
+                    "on-secondary-fixed-variant": "#454747",
+                    "hairline-border": "rgba(26, 26, 26, 0.12)",
+                    "surface-variant": "#e2e2e2",
+                    "on-primary-fixed": "#1c1b1b",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-lg": "48px",
+                    "section-gap-desktop": "144px",
+                    "section-gap-mobile": "112px",
+                    "gutter": "16px",
+                    "stack-md": "24px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "nav-link": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "quote-display": ["Crimson Pro"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "21px", "letterSpacing": "normal", "fontWeight": "400"}],
+                    "nav-link": ["14px", {"lineHeight": "21px", "letterSpacing": "normal", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "32px", "letterSpacing": "normal", "fontWeight": "300"}],
+                    "label-sm": ["12px", {"lineHeight": "12px", "letterSpacing": "normal", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "24px", "letterSpacing": "normal", "fontWeight": "300"}],
+                    "quote-display": ["24px", {"lineHeight": "32px", "letterSpacing": "normal", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #1A1A1A; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .active-tab-rail::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #1A1A1A;
+        }
+        .header-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+    </style>
+</head>
+<body>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full h-[83px] bg-pure-surface border-b border-hairline-border z-50 header-transition flex justify-between items-center px-gutter" id="top-nav">
+<div class="flex items-center">
+<span class="font-headline-lg text-headline-lg font-light tracking-tighter text-ink">StudioTool</span>
+</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="font-nav-link text-nav-link text-muted-text hover:text-ink transition-colors" href="#">Features</a>
+<a class="font-nav-link text-nav-link text-muted-text hover:text-ink transition-colors" href="#">Process</a>
+<a class="font-nav-link text-nav-link text-muted-text hover:text-ink transition-colors" href="#">Work</a>
+<a class="font-nav-link text-nav-link text-muted-text hover:text-ink transition-colors" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="px-6 py-2 bg-soft-utility hover:bg-strong-utility text-ink font-nav-link text-nav-link rounded-lg transition-colors">
+                Get Started
+            </button>
+<button class="md:hidden flex items-center p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<main class="pt-[83px]">
+<!-- Hero Section -->
+<section class="w-full flex flex-col items-center justify-center text-center px-gutter pt-section-gap-mobile md:pt-section-gap-desktop pb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-ink max-w-2xl mb-stack-md">
+                Simplify your creative feedback loop.
+            </h1>
+<p class="font-body-md text-body-md text-muted-text max-w-md mb-stack-lg">
+                StudioTool automates the mundane, allowing your team to focus on what matters: the craft of design.
+            </p>
+<button class="px-8 py-3 bg-soft-utility hover:bg-strong-utility text-ink font-body-md text-body-md rounded-lg transition-colors border border-hairline-border">
+                Start for free
+            </button>
+</section>
+<!-- Product Demo Section -->
+<section class="w-full px-gutter md:py-stack-lg">
+<div class="max-w-5xl mx-auto">
+<div class="flex gap-stack-lg border-b border-hairline-border mb-stack-md overflow-x-auto no-scrollbar">
+<button class="relative py-3 font-body-md text-body-md text-ink active-tab-rail whitespace-nowrap">Review</button>
+<button class="py-3 font-body-md text-body-md text-muted-text hover:text-ink transition-colors whitespace-nowrap">Collaborate</button>
+<button class="py-3 font-body-md text-body-md text-muted-text hover:text-ink transition-colors whitespace-nowrap">Approve</button>
+<button class="py-3 font-body-md text-body-md text-muted-text hover:text-ink transition-colors whitespace-nowrap">Automate</button>
+</div>
+<div class="bg-soft-utility rounded-lg p-stack-md md:p-stack-lg aspect-video flex items-center justify-center overflow-hidden">
+<img alt="StudioTool Interface" class="w-full h-full object-cover rounded-lg" data-alt="A high-fidelity minimalist software interface mockup showcasing a clean creative workflow dashboard. The UI is presented on a sleek desktop monitor in a bright, airy studio environment with soft neutral lighting. The dashboard features thin hairlines, generous whitespace, and a sophisticated color palette of whites and soft grays, mirroring a professional studio tool aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi4AXlerEvK4WIS2pdBjzCxKMpi7or_veN-MRKup2BnZyc9K5znyKLKzute-QZn0zbA37lPcQ-RsWiAZE8C8zAUui8k9JtVtofPIdDyjrQpJVgHrutkj8ZqPCOzpRq3plesGXrWj1AKrP-F9NwPDKxHPv8o2040iRyUhhhUeXyYcvbiLUjlnQRAFjvzjzhUKkMkpomiRDaRFFmpB6IjFyOp6C4IwNcERmu_alrGpgfF6w2lVNzckIlAOrTsVPgpKTcK1qcGQNJ3sJE"/>
+</div>
+</div>
+</section>
+<!-- Editorial Quote Section -->
+<section class="w-full py-section-gap-mobile md:py-section-gap-desktop bg-pure-surface px-gutter text-center">
+<div class="max-w-2xl mx-auto">
+<blockquote class="font-quote-display text-quote-display text-ink italic mb-stack-md">
+                    "StudioTool changed how we handle revisions. It brought a level of precision to our messy feedback cycles that we didn't know was possible."
+                </blockquote>
+<cite class="not-italic font-body-md text-body-md text-muted-text">— Sarah Jenkins, Creative Director at Forma</cite>
+</div>
+</section>
+<!-- Feature Grid -->
+<section class="w-full px-gutter py-section-gap-mobile md:py-section-gap-desktop">
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-stack-lg md:gap-x-12">
+<!-- Feature 1 -->
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-muted-text tracking-widest">PRECISION</span>
+<h3 class="font-body-md text-body-md font-bold text-ink">Unified Annotations</h3>
+<p class="font-body-md text-body-md text-muted-text">
+                        Markup every pixel with context-aware comments that sync directly to your design software in real-time.
+                    </p>
+</div>
+<!-- Feature 2 -->
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-muted-text tracking-widest">EFFICIENCY</span>
+<h3 class="font-body-md text-body-md font-bold text-ink">Automated Triage</h3>
+<p class="font-body-md text-body-md text-muted-text">
+                        Let AI organize incoming feedback by priority, type, and designer, reducing management overhead by 40%.
+                    </p>
+</div>
+<!-- Feature 3 -->
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-muted-text tracking-widest">CLARITY</span>
+<h3 class="font-body-md text-body-md font-bold text-ink">Version Lineage</h3>
+<p class="font-body-md text-body-md text-muted-text">
+                        A clean, non-destructive history of every decision made, ensuring you never lose the 'why' behind the 'what'.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="w-full py-section-gap-mobile md:py-section-gap-desktop px-gutter">
+<div class="max-w-3xl mx-auto bg-strong-utility rounded-lg p-12 text-center flex flex-col items-center gap-stack-md">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-ink">Ready to refine your process?</h2>
+<button class="px-8 py-3 bg-ink text-pure-surface font-body-md text-body-md rounded-lg hover:opacity-90 transition-opacity">
+                    Join the Waitlist
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg border-t border-hairline-border bg-pure-surface px-gutter">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-stack-lg md:gap-0">
+<div class="flex flex-col gap-stack-sm">
+<span class="font-headline-lg text-headline-lg text-ink tracking-tighter">StudioTool</span>
+<p class="font-body-md text-body-md text-muted-text">© 2024 StudioTool. All rights reserved.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-stack-lg">
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-ink">Product</span>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Features</a>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Changelog</a>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Docs</a>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-ink">Company</span>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Work</a>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-stack-sm col-span-2 md:col-span-1">
+<span class="font-label-sm text-label-sm text-ink">Social</span>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Twitter</a>
+<a class="font-body-md text-body-md text-muted-text hover:text-ink" href="#">Read.cv</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Header Hide/Show on Scroll Logic
+        let lastScrollTop = 0;
+        const nav = document.getElementById('top-nav');
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                nav.classList.add('header-hidden');
+            } else {
+                nav.classList.remove('header-hidden');
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Tab Micro-interaction
+        const tabs = document.querySelectorAll('.active-tab-rail').forEach(tab => {
+            // Logic for potential tab switching can go here
+        });
+    </script>
+</body></html>

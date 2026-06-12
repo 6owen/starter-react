@@ -10,21 +10,31 @@
 
 import { Route as rootRouteImport } from './pages/__root'
 import { Route as ImmersiveRouteRouteImport } from './pages/_immersive/route'
+import { Route as AuthRouteRouteImport } from './pages/_auth/route'
 import { Route as AppRouteRouteImport } from './pages/_app/route'
 import { Route as AppIndexRouteImport } from './pages/_app/index'
-import { Route as ImmersiveFullscreenRouteImport } from './pages/_immersive/fullscreen'
-import { Route as AppUnauthorizedRouteImport } from './pages/_app/unauthorized'
-import { Route as AppLoginRouteImport } from './pages/_app/login'
-import { Route as AppCustomRouteRouteImport } from './pages/_app/custom-route'
-import { Route as AppAboutRouteImport } from './pages/_app/about'
 import { Route as AppAuthedRouteRouteImport } from './pages/_app/_authed/route'
-import { Route as AppAuthedDashboardRouteImport } from './pages/_app/_authed/dashboard'
+import { Route as ImmersiveFullscreenIndexRouteImport } from './pages/_immersive/fullscreen/index'
+import { Route as AuthLoginIndexRouteImport } from './pages/_auth/login/index'
+import { Route as AppWorkIndexRouteImport } from './pages/_app/work/index'
+import { Route as AppUnauthorizedIndexRouteImport } from './pages/_app/unauthorized/index'
+import { Route as AppProcessIndexRouteImport } from './pages/_app/process/index'
+import { Route as AppHomeIndexRouteImport } from './pages/_app/home/index'
+import { Route as AppFeaturesIndexRouteImport } from './pages/_app/features/index'
+import { Route as AppCustomRouteIndexRouteImport } from './pages/_app/custom-route/index'
+import { Route as AppContactIndexRouteImport } from './pages/_app/contact/index'
+import { Route as AppAboutIndexRouteImport } from './pages/_app/about/index'
 import { Route as AppAuthedAdminRouteRouteImport } from './pages/_app/_authed/_admin/route'
+import { Route as AppAuthedDashboardIndexRouteImport } from './pages/_app/_authed/dashboard/index'
 import { Route as AppAuthedAdminAdminRouteRouteImport } from './pages/_app/_authed/_admin/admin/route'
-import { Route as AppAuthedAdminAdminUsersRouteImport } from './pages/_app/_authed/_admin/admin/users'
+import { Route as AppAuthedAdminAdminUsersIndexRouteImport } from './pages/_app/_authed/_admin/admin/users/index'
 
 const ImmersiveRouteRoute = ImmersiveRouteRouteImport.update({
   id: '/_immersive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -36,42 +46,68 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const ImmersiveFullscreenRoute = ImmersiveFullscreenRouteImport.update({
-  id: '/fullscreen',
-  path: '/fullscreen',
-  getParentRoute: () => ImmersiveRouteRoute,
-} as any)
-const AppUnauthorizedRoute = AppUnauthorizedRouteImport.update({
-  id: '/unauthorized',
-  path: '/unauthorized',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppLoginRoute = AppLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppCustomRouteRoute = AppCustomRouteRouteImport.update({
-  id: '/custom-route',
-  path: '/custom-route',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppAboutRoute = AppAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 const AppAuthedRouteRoute = AppAuthedRouteRouteImport.update({
   id: '/_authed',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppAuthedDashboardRoute = AppAuthedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AppAuthedRouteRoute,
+const ImmersiveFullscreenIndexRoute =
+  ImmersiveFullscreenIndexRouteImport.update({
+    id: '/fullscreen/',
+    path: '/fullscreen/',
+    getParentRoute: () => ImmersiveRouteRoute,
+  } as any)
+const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AppWorkIndexRoute = AppWorkIndexRouteImport.update({
+  id: '/work/',
+  path: '/work/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppUnauthorizedIndexRoute = AppUnauthorizedIndexRouteImport.update({
+  id: '/unauthorized/',
+  path: '/unauthorized/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppProcessIndexRoute = AppProcessIndexRouteImport.update({
+  id: '/process/',
+  path: '/process/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppHomeIndexRoute = AppHomeIndexRouteImport.update({
+  id: '/home/',
+  path: '/home/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppFeaturesIndexRoute = AppFeaturesIndexRouteImport.update({
+  id: '/features/',
+  path: '/features/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppCustomRouteIndexRoute = AppCustomRouteIndexRouteImport.update({
+  id: '/custom-route/',
+  path: '/custom-route/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppContactIndexRoute = AppContactIndexRouteImport.update({
+  id: '/contact/',
+  path: '/contact/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAboutIndexRoute = AppAboutIndexRouteImport.update({
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const AppAuthedAdminRouteRoute = AppAuthedAdminRouteRouteImport.update({
   id: '/_admin',
+  getParentRoute: () => AppAuthedRouteRoute,
+} as any)
+const AppAuthedDashboardIndexRoute = AppAuthedDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
   getParentRoute: () => AppAuthedRouteRoute,
 } as any)
 const AppAuthedAdminAdminRouteRoute =
@@ -80,93 +116,126 @@ const AppAuthedAdminAdminRouteRoute =
     path: '/admin',
     getParentRoute: () => AppAuthedAdminRouteRoute,
   } as any)
-const AppAuthedAdminAdminUsersRoute =
-  AppAuthedAdminAdminUsersRouteImport.update({
-    id: '/users',
-    path: '/users',
+const AppAuthedAdminAdminUsersIndexRoute =
+  AppAuthedAdminAdminUsersIndexRouteImport.update({
+    id: '/users/',
+    path: '/users/',
     getParentRoute: () => AppAuthedAdminAdminRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
-  '/about': typeof AppAboutRoute
-  '/custom-route': typeof AppCustomRouteRoute
-  '/login': typeof AppLoginRoute
-  '/unauthorized': typeof AppUnauthorizedRoute
-  '/fullscreen': typeof ImmersiveFullscreenRoute
-  '/dashboard': typeof AppAuthedDashboardRoute
+  '/about/': typeof AppAboutIndexRoute
+  '/contact/': typeof AppContactIndexRoute
+  '/custom-route/': typeof AppCustomRouteIndexRoute
+  '/features/': typeof AppFeaturesIndexRoute
+  '/home/': typeof AppHomeIndexRoute
+  '/process/': typeof AppProcessIndexRoute
+  '/unauthorized/': typeof AppUnauthorizedIndexRoute
+  '/work/': typeof AppWorkIndexRoute
+  '/login/': typeof AuthLoginIndexRoute
+  '/fullscreen/': typeof ImmersiveFullscreenIndexRoute
   '/admin': typeof AppAuthedAdminAdminRouteRouteWithChildren
-  '/admin/users': typeof AppAuthedAdminAdminUsersRoute
+  '/dashboard/': typeof AppAuthedDashboardIndexRoute
+  '/admin/users/': typeof AppAuthedAdminAdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
-  '/about': typeof AppAboutRoute
-  '/custom-route': typeof AppCustomRouteRoute
-  '/login': typeof AppLoginRoute
-  '/unauthorized': typeof AppUnauthorizedRoute
-  '/fullscreen': typeof ImmersiveFullscreenRoute
-  '/dashboard': typeof AppAuthedDashboardRoute
+  '/about': typeof AppAboutIndexRoute
+  '/contact': typeof AppContactIndexRoute
+  '/custom-route': typeof AppCustomRouteIndexRoute
+  '/features': typeof AppFeaturesIndexRoute
+  '/home': typeof AppHomeIndexRoute
+  '/process': typeof AppProcessIndexRoute
+  '/unauthorized': typeof AppUnauthorizedIndexRoute
+  '/work': typeof AppWorkIndexRoute
+  '/login': typeof AuthLoginIndexRoute
+  '/fullscreen': typeof ImmersiveFullscreenIndexRoute
   '/admin': typeof AppAuthedAdminAdminRouteRouteWithChildren
-  '/admin/users': typeof AppAuthedAdminAdminUsersRoute
+  '/dashboard': typeof AppAuthedDashboardIndexRoute
+  '/admin/users': typeof AppAuthedAdminAdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/_immersive': typeof ImmersiveRouteRouteWithChildren
   '/_app/_authed': typeof AppAuthedRouteRouteWithChildren
-  '/_app/about': typeof AppAboutRoute
-  '/_app/custom-route': typeof AppCustomRouteRoute
-  '/_app/login': typeof AppLoginRoute
-  '/_app/unauthorized': typeof AppUnauthorizedRoute
-  '/_immersive/fullscreen': typeof ImmersiveFullscreenRoute
   '/_app/': typeof AppIndexRoute
   '/_app/_authed/_admin': typeof AppAuthedAdminRouteRouteWithChildren
-  '/_app/_authed/dashboard': typeof AppAuthedDashboardRoute
+  '/_app/about/': typeof AppAboutIndexRoute
+  '/_app/contact/': typeof AppContactIndexRoute
+  '/_app/custom-route/': typeof AppCustomRouteIndexRoute
+  '/_app/features/': typeof AppFeaturesIndexRoute
+  '/_app/home/': typeof AppHomeIndexRoute
+  '/_app/process/': typeof AppProcessIndexRoute
+  '/_app/unauthorized/': typeof AppUnauthorizedIndexRoute
+  '/_app/work/': typeof AppWorkIndexRoute
+  '/_auth/login/': typeof AuthLoginIndexRoute
+  '/_immersive/fullscreen/': typeof ImmersiveFullscreenIndexRoute
   '/_app/_authed/_admin/admin': typeof AppAuthedAdminAdminRouteRouteWithChildren
-  '/_app/_authed/_admin/admin/users': typeof AppAuthedAdminAdminUsersRoute
+  '/_app/_authed/dashboard/': typeof AppAuthedDashboardIndexRoute
+  '/_app/_authed/_admin/admin/users/': typeof AppAuthedAdminAdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/custom-route'
-    | '/login'
-    | '/unauthorized'
-    | '/fullscreen'
-    | '/dashboard'
+    | '/about/'
+    | '/contact/'
+    | '/custom-route/'
+    | '/features/'
+    | '/home/'
+    | '/process/'
+    | '/unauthorized/'
+    | '/work/'
+    | '/login/'
+    | '/fullscreen/'
     | '/admin'
-    | '/admin/users'
+    | '/dashboard/'
+    | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/custom-route'
-    | '/login'
+    | '/features'
+    | '/home'
+    | '/process'
     | '/unauthorized'
+    | '/work'
+    | '/login'
     | '/fullscreen'
-    | '/dashboard'
     | '/admin'
+    | '/dashboard'
     | '/admin/users'
   id:
     | '__root__'
     | '/_app'
+    | '/_auth'
     | '/_immersive'
     | '/_app/_authed'
-    | '/_app/about'
-    | '/_app/custom-route'
-    | '/_app/login'
-    | '/_app/unauthorized'
-    | '/_immersive/fullscreen'
     | '/_app/'
     | '/_app/_authed/_admin'
-    | '/_app/_authed/dashboard'
+    | '/_app/about/'
+    | '/_app/contact/'
+    | '/_app/custom-route/'
+    | '/_app/features/'
+    | '/_app/home/'
+    | '/_app/process/'
+    | '/_app/unauthorized/'
+    | '/_app/work/'
+    | '/_auth/login/'
+    | '/_immersive/fullscreen/'
     | '/_app/_authed/_admin/admin'
-    | '/_app/_authed/_admin/admin/users'
+    | '/_app/_authed/dashboard/'
+    | '/_app/_authed/_admin/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   ImmersiveRouteRoute: typeof ImmersiveRouteRouteWithChildren
 }
 
@@ -177,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ImmersiveRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -193,41 +269,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_immersive/fullscreen': {
-      id: '/_immersive/fullscreen'
-      path: '/fullscreen'
-      fullPath: '/fullscreen'
-      preLoaderRoute: typeof ImmersiveFullscreenRouteImport
-      parentRoute: typeof ImmersiveRouteRoute
-    }
-    '/_app/unauthorized': {
-      id: '/_app/unauthorized'
-      path: '/unauthorized'
-      fullPath: '/unauthorized'
-      preLoaderRoute: typeof AppUnauthorizedRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/login': {
-      id: '/_app/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AppLoginRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/custom-route': {
-      id: '/_app/custom-route'
-      path: '/custom-route'
-      fullPath: '/custom-route'
-      preLoaderRoute: typeof AppCustomRouteRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/about': {
-      id: '/_app/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AppAboutRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
     '/_app/_authed': {
       id: '/_app/_authed'
       path: ''
@@ -235,18 +276,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthedRouteRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/_authed/dashboard': {
-      id: '/_app/_authed/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppAuthedDashboardRouteImport
-      parentRoute: typeof AppAuthedRouteRoute
+    '/_immersive/fullscreen/': {
+      id: '/_immersive/fullscreen/'
+      path: '/fullscreen'
+      fullPath: '/fullscreen/'
+      preLoaderRoute: typeof ImmersiveFullscreenIndexRouteImport
+      parentRoute: typeof ImmersiveRouteRoute
+    }
+    '/_auth/login/': {
+      id: '/_auth/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof AuthLoginIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_app/work/': {
+      id: '/_app/work/'
+      path: '/work'
+      fullPath: '/work/'
+      preLoaderRoute: typeof AppWorkIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/unauthorized/': {
+      id: '/_app/unauthorized/'
+      path: '/unauthorized'
+      fullPath: '/unauthorized/'
+      preLoaderRoute: typeof AppUnauthorizedIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/process/': {
+      id: '/_app/process/'
+      path: '/process'
+      fullPath: '/process/'
+      preLoaderRoute: typeof AppProcessIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/home/': {
+      id: '/_app/home/'
+      path: '/home'
+      fullPath: '/home/'
+      preLoaderRoute: typeof AppHomeIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/features/': {
+      id: '/_app/features/'
+      path: '/features'
+      fullPath: '/features/'
+      preLoaderRoute: typeof AppFeaturesIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/custom-route/': {
+      id: '/_app/custom-route/'
+      path: '/custom-route'
+      fullPath: '/custom-route/'
+      preLoaderRoute: typeof AppCustomRouteIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/contact/': {
+      id: '/_app/contact/'
+      path: '/contact'
+      fullPath: '/contact/'
+      preLoaderRoute: typeof AppContactIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/about/': {
+      id: '/_app/about/'
+      path: '/about'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AppAboutIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/_app/_authed/_admin': {
       id: '/_app/_authed/_admin'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AppAuthedAdminRouteRouteImport
+      parentRoute: typeof AppAuthedRouteRoute
+    }
+    '/_app/_authed/dashboard/': {
+      id: '/_app/_authed/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AppAuthedDashboardIndexRouteImport
       parentRoute: typeof AppAuthedRouteRoute
     }
     '/_app/_authed/_admin/admin': {
@@ -256,23 +367,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthedAdminAdminRouteRouteImport
       parentRoute: typeof AppAuthedAdminRouteRoute
     }
-    '/_app/_authed/_admin/admin/users': {
-      id: '/_app/_authed/_admin/admin/users'
+    '/_app/_authed/_admin/admin/users/': {
+      id: '/_app/_authed/_admin/admin/users/'
       path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AppAuthedAdminAdminUsersRouteImport
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AppAuthedAdminAdminUsersIndexRouteImport
       parentRoute: typeof AppAuthedAdminAdminRouteRoute
     }
   }
 }
 
 interface AppAuthedAdminAdminRouteRouteChildren {
-  AppAuthedAdminAdminUsersRoute: typeof AppAuthedAdminAdminUsersRoute
+  AppAuthedAdminAdminUsersIndexRoute: typeof AppAuthedAdminAdminUsersIndexRoute
 }
 
 const AppAuthedAdminAdminRouteRouteChildren: AppAuthedAdminAdminRouteRouteChildren =
   {
-    AppAuthedAdminAdminUsersRoute: AppAuthedAdminAdminUsersRoute,
+    AppAuthedAdminAdminUsersIndexRoute: AppAuthedAdminAdminUsersIndexRoute,
   }
 
 const AppAuthedAdminAdminRouteRouteWithChildren =
@@ -293,12 +404,12 @@ const AppAuthedAdminRouteRouteWithChildren =
 
 interface AppAuthedRouteRouteChildren {
   AppAuthedAdminRouteRoute: typeof AppAuthedAdminRouteRouteWithChildren
-  AppAuthedDashboardRoute: typeof AppAuthedDashboardRoute
+  AppAuthedDashboardIndexRoute: typeof AppAuthedDashboardIndexRoute
 }
 
 const AppAuthedRouteRouteChildren: AppAuthedRouteRouteChildren = {
   AppAuthedAdminRouteRoute: AppAuthedAdminRouteRouteWithChildren,
-  AppAuthedDashboardRoute: AppAuthedDashboardRoute,
+  AppAuthedDashboardIndexRoute: AppAuthedDashboardIndexRoute,
 }
 
 const AppAuthedRouteRouteWithChildren = AppAuthedRouteRoute._addFileChildren(
@@ -307,32 +418,52 @@ const AppAuthedRouteRouteWithChildren = AppAuthedRouteRoute._addFileChildren(
 
 interface AppRouteRouteChildren {
   AppAuthedRouteRoute: typeof AppAuthedRouteRouteWithChildren
-  AppAboutRoute: typeof AppAboutRoute
-  AppCustomRouteRoute: typeof AppCustomRouteRoute
-  AppLoginRoute: typeof AppLoginRoute
-  AppUnauthorizedRoute: typeof AppUnauthorizedRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppAboutIndexRoute: typeof AppAboutIndexRoute
+  AppContactIndexRoute: typeof AppContactIndexRoute
+  AppCustomRouteIndexRoute: typeof AppCustomRouteIndexRoute
+  AppFeaturesIndexRoute: typeof AppFeaturesIndexRoute
+  AppHomeIndexRoute: typeof AppHomeIndexRoute
+  AppProcessIndexRoute: typeof AppProcessIndexRoute
+  AppUnauthorizedIndexRoute: typeof AppUnauthorizedIndexRoute
+  AppWorkIndexRoute: typeof AppWorkIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAuthedRouteRoute: AppAuthedRouteRouteWithChildren,
-  AppAboutRoute: AppAboutRoute,
-  AppCustomRouteRoute: AppCustomRouteRoute,
-  AppLoginRoute: AppLoginRoute,
-  AppUnauthorizedRoute: AppUnauthorizedRoute,
   AppIndexRoute: AppIndexRoute,
+  AppAboutIndexRoute: AppAboutIndexRoute,
+  AppContactIndexRoute: AppContactIndexRoute,
+  AppCustomRouteIndexRoute: AppCustomRouteIndexRoute,
+  AppFeaturesIndexRoute: AppFeaturesIndexRoute,
+  AppHomeIndexRoute: AppHomeIndexRoute,
+  AppProcessIndexRoute: AppProcessIndexRoute,
+  AppUnauthorizedIndexRoute: AppUnauthorizedIndexRoute,
+  AppWorkIndexRoute: AppWorkIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
+interface AuthRouteRouteChildren {
+  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthLoginIndexRoute: AuthLoginIndexRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 interface ImmersiveRouteRouteChildren {
-  ImmersiveFullscreenRoute: typeof ImmersiveFullscreenRoute
+  ImmersiveFullscreenIndexRoute: typeof ImmersiveFullscreenIndexRoute
 }
 
 const ImmersiveRouteRouteChildren: ImmersiveRouteRouteChildren = {
-  ImmersiveFullscreenRoute: ImmersiveFullscreenRoute,
+  ImmersiveFullscreenIndexRoute: ImmersiveFullscreenIndexRoute,
 }
 
 const ImmersiveRouteRouteWithChildren = ImmersiveRouteRoute._addFileChildren(
@@ -341,6 +472,7 @@ const ImmersiveRouteRouteWithChildren = ImmersiveRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   ImmersiveRouteRoute: ImmersiveRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport

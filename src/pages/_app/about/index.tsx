@@ -1,14 +1,10 @@
 import { Link, createFileRoute, useRouterState } from '@tanstack/react-router'
-import { z } from 'zod'
 import { useToggle } from 'react-use'
 
 import { Button } from '@/components/ui/button'
+import { aboutSearchSchema } from './-schema'
 
-const aboutSearchSchema = z.object({
-  view: z.enum(['notes', 'summary']).catch('summary').optional(),
-})
-
-export const Route = createFileRoute('/_app/about')({
+export const Route = createFileRoute('/_app/about/')({
   component: AboutPage,
   head: () => ({
     meta: [{ title: 'About | Starter React' }],

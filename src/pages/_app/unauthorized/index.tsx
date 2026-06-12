@@ -2,13 +2,13 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 
 import { Button } from '@/components/ui/button'
 
-export const Route = createFileRoute('/_app/unauthorized')({
+export const Route = createFileRoute('/_app/unauthorized/')({
   component: UnauthorizedPage,
   head: () => ({
     meta: [{ title: 'Unauthorized | Starter React' }],
   }),
   validateSearch: (search) => ({
-    redirect: typeof search.redirect === 'string' ? search.redirect : '/',
+    redirect: typeof search.redirect === 'string' ? search.redirect : '/home',
   }),
 })
 
@@ -34,7 +34,7 @@ function UnauthorizedPage() {
         </p>
         <div className="flex gap-3">
           <Button asChild>
-            <Link to="/">Return Home</Link>
+            <Link to="/home">Return Home</Link>
           </Button>
           <Button asChild variant="outline">
             <Link to="/about">Read About the guard setup</Link>

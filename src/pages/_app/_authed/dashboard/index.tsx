@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_app/_authed/dashboard')({
+export const Route = createFileRoute('/_app/_authed/dashboard/')({
   component: DashboardPage,
   head: () => ({
     meta: [{ title: 'Dashboard | Starter React' }],

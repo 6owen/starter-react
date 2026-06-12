@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workflow.design Preview</title>
+    <meta name="color-scheme" content="light" />
+    <style>
+      :root {
+        --page-bg: #FFFFFF;
+        --page-bg-muted: rgb(251, 251, 251);
+        --surface-bg: #F6F6F6;
+        --surface-bg-muted: rgb(251, 251, 251);
+        --surface-border: rgba(26, 26, 26, 0.12);
+        --surface-border-strong: rgb(223, 223, 223);
+        --surface-shadow: none;
+        --surface-shadow-soft: 0 0 0 1px rgba(26, 26, 26, 0.12);
+        --ink: #1A1A1A;
+        --muted: rgba(26, 26, 26, 0.65);
+        --subtle: rgb(150, 150, 150);
+        --accent: #547E69;
+        --font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-display: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+        --body-size: 14px;
+        --body-line: 21px;
+        --body-weight: 400;
+        --label-size: 12px;
+        --label-line: 16px;
+        --label-track: 0.04em;
+        --title-size: 32px;
+        --title-line: 32px;
+        --title-track: -0.03em;
+        --section-size: 32px;
+        --section-line: 32px;
+        --section-track: -0.02em;
+        --source-size: 13px;
+        --source-line: 21px;
+        --space-1: 8px;
+        --space-2: 12px;
+        --space-3: 16px;
+        --space-4: 24px;
+        --space-5: 32px;
+        --space-6: 40px;
+        --radius-panel: 8px;
+        --radius-card: 8px;
+        --radius-micro: 4px;
+        --radius-pill: 999px;
+        --button-height: 40px;
+        --button-font-size: 14px;
+        --button-weight: 400;
+        --button-radius: 8px;
+        --secondary-button-radius: 8px;
+        --layout-gap: 24px;
+        --page-padding: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        font-weight: var(--body-weight);
+        line-height: var(--body-line);
+        background:
+          radial-gradient(circle at top, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30%),
+          linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-muted) 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px);
+        background-size: 100% calc(48px), calc(48px) 100%;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 88%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - (var(--page-padding) * 2)));
+        margin: 0 auto;
+        padding: var(--page-padding) 0 calc(var(--page-padding) * 1.2);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(340px, 0.92fr) minmax(420px, 1fr);
+        gap: var(--layout-gap);
+        align-items: start;
+      }
+
+      .stack {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-panel);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--surface-bg) 88%, white) 0%, var(--surface-bg) 100%);
+        box-shadow: var(--surface-shadow);
+      }
+
+      .panel-inner {
+        padding: var(--space-4);
+      }
+
+      .hero-card {
+        position: relative;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        left: var(--space-4);
+        right: var(--space-4);
+        top: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #F6F6F6 0%, #547E69 33%, #FFFFFF 67%, #1A1A1A 100%);
+      }
+
+      .eyebrow {
+        margin-bottom: var(--space-2);
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .site-title,
+      .section-title {
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .site-title {
+        font-size: var(--title-size);
+        line-height: var(--title-line);
+        letter-spacing: var(--title-track);
+      }
+
+      .descriptor {
+        margin: var(--space-2) 0 0;
+        max-width: 42ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .summary {
+        margin: var(--space-3) 0 0;
+        max-width: 56ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin: var(--space-3) 0 0;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: calc(8px * 3);
+        padding: 0 var(--space-2);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg);
+        color: var(--ink);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .observed-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-top: var(--space-4);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--surface-border);
+        color: var(--muted);
+        font-size: var(--label-size);
+        overflow-wrap: anywhere;
+      }
+
+      .observed-link::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+
+      .section-title {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .section-subtitle {
+        margin: var(--space-2) 0 var(--space-4);
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .palette-grid,
+      .theme-mode-grid,
+      .type-list,
+      .component-card,
+      .prompt-list,
+      .mini-grid,
+      .token-table {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .palette-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .palette-row.neutral-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .theme-mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-3);
+      }
+
+      .theme-mode-card {
+        display: grid;
+        gap: var(--space-2);
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: color-mix(in srgb, var(--surface-bg) 92%, white);
+      }
+
+      .theme-mode-card.is-dark {
+        background: #111111;
+        color: #f4f4f4;
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .theme-mode-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+      }
+
+      .theme-mode-label {
+        color: var(--subtle);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .theme-mode-card.is-dark .theme-mode-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .theme-mode-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: calc(var(--body-size) - 1px);
+        line-height: calc(var(--body-line) - 4px);
+      }
+
+      .theme-mode-card.is-dark .theme-mode-note {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .theme-swatch-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .theme-swatch {
+        display: grid;
+        gap: 6px;
+      }
+
+      .theme-swatch-box {
+        height: 72px;
+        border-radius: calc(var(--radius-card) - 4px);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-box {
+        border-color: rgba(255, 255, 255, 0.14);
+      }
+
+      .theme-swatch-name {
+        color: inherit;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .theme-swatch-value {
+        color: var(--subtle);
+        font-size: 11px;
+        line-height: 1.3;
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-value {
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .swatch {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .swatch-box {
+        min-height: calc(8px * 12);
+        border-radius: var(--radius-card);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 4%, transparent);
+      }
+
+      .swatch-label,
+      .token-heading,
+      .prompt-card strong,
+      .card-preview h4 {
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .swatch-meta,
+      .type-metrics,
+      .mini-label,
+      .copy-state,
+      .file-tab,
+      .ghost-button,
+      .segmented button {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .type-row {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: var(--space-2);
+        align-items: baseline;
+        padding: var(--space-2) 0;
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .type-row:first-child,
+      .mini-row:first-child,
+      .token-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .type-role {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .type-sample {
+        color: var(--ink);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .split-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-4);
+      }
+
+      .token-row,
+      .mini-row {
+        display: grid;
+        gap: var(--space-2);
+        align-items: start;
+        padding-top: var(--space-2);
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .token-row {
+        grid-template-columns: 1fr auto;
+      }
+
+      .mini-row {
+        grid-template-columns: 88px minmax(0, 1fr);
+      }
+
+      .mini-content,
+      .prompt-card p,
+      .card-preview p {
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .radius-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .radius-card,
+      .prompt-card {
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: var(--surface-bg-muted);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .radius-demo {
+        aspect-ratio: 1;
+        width: 100%;
+        border: 1px solid var(--surface-border-strong);
+        background: var(--surface-bg);
+      }
+
+      .radius-name {
+        margin-top: var(--space-2);
+        color: var(--ink);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .radius-value {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: var(--label-size);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: var(--button-height);
+        padding: 0 var(--space-3);
+        border-radius: var(--button-radius);
+        font-family: var(--font-body);
+        font-size: var(--button-font-size);
+        font-weight: var(--button-weight);
+        line-height: 1;
+        letter-spacing: normal;
+      }
+
+      .cta-primary {
+        border: 1px solid transparent;
+        background: #F6F6F6;
+        color: #1A1A1A;
+        border-radius: 8px;
+      }
+
+      .cta-secondary {
+        border: 1px solid rgba(26, 26, 26, 0.12);
+        background: #FFFFFF;
+        color: #1A1A1A;
+        border-radius: 8px;
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .card-preview {
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 72%, transparent);
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: none;
+      }
+
+      .card-preview h4 {
+        margin: 0 0 var(--space-1);
+      }
+
+      .source-shell {
+        position: sticky;
+        top: var(--page-padding);
+      }
+
+      .source-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-4) var(--space-2);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .file-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px var(--space-3);
+      }
+
+      .file-tab {
+        padding: 0 0 var(--space-2);
+        border-bottom: 2px solid transparent;
+      }
+
+      .file-tab.active {
+        color: var(--ink);
+        border-bottom-color: var(--ink);
+        font-weight: 600;
+      }
+
+      .source-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-4);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .segmented {
+        display: inline-flex;
+        padding: 3px;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg-muted);
+      }
+
+      .segmented button {
+        border: 0;
+        border-radius: var(--radius-pill);
+        background: transparent;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+
+      .segmented button.is-active {
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-left: auto;
+      }
+
+      .ghost-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-border);
+        border-radius: 4px;
+        background: var(--surface-bg);
+        box-shadow: var(--surface-shadow-soft);
+        cursor: pointer;
+      }
+
+      .source-body {
+        max-height: calc(100vh - (var(--page-padding) * 2) - 120px);
+        overflow: auto;
+      }
+
+      .source-view,
+      .rendered-view {
+        margin: 0;
+        padding: var(--space-4);
+      }
+
+      .source-view {
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: var(--source-size);
+        line-height: var(--source-line);
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: var(--surface-bg);
+      }
+
+      .rendered-view {
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        background: var(--surface-bg);
+      }
+
+      .rendered-view[hidden],
+      .source-view[hidden] {
+        display: none;
+      }
+
+      .rendered-view h2,
+      .rendered-view h3 {
+        margin: var(--space-4) 0 var(--space-2);
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .rendered-view h2 {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .rendered-view h2:first-child {
+        margin-top: 0;
+      }
+
+      .rendered-view h3 {
+        color: var(--muted);
+        font-size: calc(32px - 4px);
+        line-height: calc(32px - 4px);
+      }
+
+      .rendered-view p,
+      .rendered-view li {
+        color: var(--muted);
+      }
+
+      .rendered-view ul,
+      .rendered-view ol {
+        margin: 0 0 var(--space-3) 20px;
+        padding: 0;
+      }
+
+      .rendered-view table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: var(--space-2) 0 var(--space-4);
+      }
+
+      .rendered-view th,
+      .rendered-view td {
+        padding: var(--space-2) var(--space-2);
+        border: 1px solid var(--surface-border);
+        text-align: left;
+        vertical-align: top;
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .rendered-view th {
+        color: var(--ink);
+        background: var(--surface-bg-muted);
+      }
+
+      .rendered-view code {
+        padding: 0.14em 0.4em;
+        border-radius: 4px;
+        background: var(--surface-bg-muted);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 1120px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .source-shell {
+          position: relative;
+          top: 0;
+        }
+
+        .source-body {
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          width: min(100vw - (12px * 2), 100%);
+          padding-top: 12px;
+        }
+
+        .panel-inner,
+        .source-view,
+        .rendered-view {
+          padding-left: var(--space-3);
+          padding-right: var(--space-3);
+        }
+
+        .palette-row,
+        .palette-row.neutral-row,
+        .theme-mode-grid,
+        .theme-swatch-row,
+        .split-card,
+        .radius-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .type-row,
+        .mini-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="layout">
+        <section class="stack">
+          <article class="panel hero-card">
+            <div class="panel-inner">
+              <div class="eyebrow">Design Preview</div>
+              <h1 class="site-title">Workflow.design</h1>
+              <p class="descriptor">Workflow&#39;s marketing site is calm, editorial, and deliberately understated.</p>
+              <div class="chip-row"><span class="chip">Near-monochrome interface with o...</span><span class="chip">Flat surfaces and hairline divid...</span><span class="chip">Light-weight Inter display paire...</span><span class="chip">Full-width composition with cons...</span></div>
+              <p class="summary">Workflow&#39;s marketing site is calm, editorial, and deliberately understated. The system avoids loud SaaS gradients and instead leans on a mostly monochrome palette, roomy full-width bands, and flat product-demo surfaces that let the message and motion carry the page.</p>
+              <a class="observed-link" href="https://www.workflow.design/" target="_blank" rel="noreferrer">https://www.workflow.design/</a>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Palette</h2>
+              <p class="section-subtitle">Roles and neutrals rendered using the extracted design system rather than a separate display theme.</p>
+              <div class="palette-grid"><div class="palette-row"><div class="swatch">
+    <div class="swatch-box" style="background:#F6F6F6;"></div>
+    <div class="swatch-label">Soft Utility Fill</div>
+    <div class="swatch-meta">
+      <span>#F6F6F6</span>
+      <span>Primary action</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#547E69;"></div>
+    <div class="swatch-label">Approval Green</div>
+    <div class="swatch-meta">
+      <span>#547E69</span>
+      <span>Accent</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#FFFFFF;"></div>
+    <div class="swatch-label">Pure Surface</div>
+    <div class="swatch-meta">
+      <span>#FFFFFF</span>
+      <span>Surface</span>
+    </div>
+  </div></div><div class="palette-row neutral-row"><div class="swatch">
+    <div class="swatch-box" style="background:#1A1A1A;"></div>
+    <div class="swatch-label">Ink</div>
+    <div class="swatch-meta">
+      <span>#1A1A1A</span>
+      <span>Text</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:rgba(26, 26, 26, 0.12);"></div>
+    <div class="swatch-label">Hairline Ink</div>
+    <div class="swatch-meta">
+      <span>rgba(26, 26, 26, 0.12)</span>
+      <span>Border</span>
+    </div>
+  </div></div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Theme Modes</h2>
+              <p class="section-subtitle">If the product supports light and dark themes, both modes should stay visible in the exported design system and preview.</p>
+              <div class="theme-mode-grid"><div class="theme-mode-card ">
+    <div class="theme-mode-head">
+      <strong>Light Mode</strong>
+      <span class="theme-mode-label">Light</span>
+    </div>
+    
+    <div class="theme-swatch-row"><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#FFFFFF;"></div>
+        <div class="theme-swatch-name">Background</div>
+        <div class="theme-swatch-value">#FFFFFF</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#F6F6F6;"></div>
+        <div class="theme-swatch-name">Surface</div>
+        <div class="theme-swatch-value">#F6F6F6</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#1A1A1A;"></div>
+        <div class="theme-swatch-name">Text</div>
+        <div class="theme-swatch-value">#1A1A1A</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#547E69;"></div>
+        <div class="theme-swatch-name">Accent</div>
+        <div class="theme-swatch-value">#547E69</div>
+      </div></div>
+  </div><div class="theme-mode-card is-dark">
+    <div class="theme-mode-head">
+      <strong>Dark Mode</strong>
+      <span class="theme-mode-label">Dark</span>
+    </div>
+    
+    <div class="theme-swatch-row"><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#FFFFFF;"></div>
+        <div class="theme-swatch-name">Background</div>
+        <div class="theme-swatch-value">#FFFFFF</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#1A1A1A;"></div>
+        <div class="theme-swatch-name">Surface</div>
+        <div class="theme-swatch-value">#1A1A1A</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#1A1A1A;"></div>
+        <div class="theme-swatch-name">Text</div>
+        <div class="theme-swatch-value">#1A1A1A</div>
+      </div><div class="theme-swatch">
+        <div class="theme-swatch-box" style="background:#547E69;"></div>
+        <div class="theme-swatch-name">Accent</div>
+        <div class="theme-swatch-value">#547E69</div>
+      </div></div>
+  </div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Typography</h2>
+              <p class="section-subtitle">The preview shell itself now uses the extracted typography stack, sizes, line heights, and tracking.</p>
+              <div class="type-list"><div class="type-row">
+        <div class="type-role">Hero headline</div>
+        <div
+          class="type-sample"
+          style="font-size:32px; line-height:32px; font-weight:300; letter-spacing:normal; font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">32px desktop/tablet, 24px mobile • 300 • 32px / 24px</div>
+      </div><div class="type-row">
+        <div class="type-role">Section heading</div>
+        <div
+          class="type-sample"
+          style="font-size:32px; line-height:32px; font-weight:300; letter-spacing:normal; font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">32px desktop/tablet, 24px mobile • 300 • 32px / 24px</div>
+      </div><div class="type-row">
+        <div class="type-role">Body</div>
+        <div
+          class="type-sample"
+          style="font-size:14px; line-height:21px; font-weight:400; letter-spacing:normal; font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">14px • 400 • 21px</div>
+      </div><div class="type-row">
+        <div class="type-role">Label / Eyebrow</div>
+        <div
+          class="type-sample"
+          style="font-size:12px; line-height:12px; font-weight:400; letter-spacing:normal; font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">12px to 14px • 400 to 700 • 12px to 21px</div>
+      </div><div class="type-row">
+        <div class="type-role">Caption / Meta</div>
+        <div
+          class="type-sample"
+          style="font-size:14px; line-height:21px; font-weight:400; letter-spacing:normal; font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">14px • 400 • 21px</div>
+      </div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Spacing &amp; Shape</h2>
+              <p class="section-subtitle">Spacing, panel padding, and radius tokens are mapped directly from the layout rules in the markdown.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Spacing</h3>
+      <div class="token-table"><div class="token-row">
+        <span>Base unit</span>
+        <span>8px</span>
+      </div><div class="token-row">
+        <span>Step 2</span>
+        <span>12px</span>
+      </div><div class="token-row">
+        <span>Step 3</span>
+        <span>16px</span>
+      </div><div class="token-row">
+        <span>Step 4</span>
+        <span>24px</span>
+      </div><div class="token-row">
+        <span>Step 5</span>
+        <span>32px</span>
+      </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Border Radius</h3>
+      <div class="radius-grid"><div class="radius-card">
+        <div class="radius-demo" style="border-radius:4px;"></div>
+        <div class="radius-name">Micro utility</div>
+        <div class="radius-value">4px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:8px;"></div>
+        <div class="radius-name">Standard module</div>
+        <div class="radius-value">8px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">Category rail</div>
+        <div class="radius-value">999px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">CTA pill</div>
+        <div class="radius-value">999px</div>
+      </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Components</h2>
+              <p class="section-subtitle">Buttons and cards use the documented height, weight, radius, colors, and surface treatment.</p>
+              <div class="component-card">
+    <div class="button-row">
+      <span class="cta cta-primary">Start Deploying</span>
+      <span class="cta cta-secondary">Get a Demo</span>
+    </div>
+    <div class="card-preview">
+      <h4>System Card Preview</h4>
+      <p>Mostly borderless layouts with a few soft utility cards in #ECECEC.</p>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">System Notes</h2>
+              <p class="section-subtitle">Responsive behavior and depth rules stay visible while keeping the overall proportions calm and readable.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Breakpoints</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">Mobile</div>
+            <div class="mini-content"><strong>&lt;= 767px</strong><br />Headings compress from 32px to 24px; overlay menu takes over; stacked feature compositions get taller</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Tablet</div>
+            <div class="mini-content"><strong>768px - 991px</strong><br />Desktop-scale typography remains, but nav switches to a menu button and overlay navigation</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Desktop</div>
+            <div class="mini-content"><strong>&gt;= 992px</strong><br />Inline nav returns, header height expands to 83px, and section rhythm opens to 144px</div>
+          </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Elevation</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">Flat</div>
+            <div class="mini-content"><strong>Transparent or white surfaces with no shadow</strong><br />Most sections, nav links, page background</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Ring</div>
+            <div class="mini-content"><strong>1px soft ink divider or rail</strong><br />Tab rails, subtle utility edges, quiet separation</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Card</div>
+            <div class="mini-content"><strong>#ECECEC or #F6F6F6 fill with no shadow</strong><br />Demo tiles, quiet controls, utility shells</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Focus</div>
+            <div class="mini-content"><strong>Minimal visual shift, mostly structural</strong><br />Keyboard states and active tabs rely on rails/radius more than glow</div>
+          </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Prompt Guide</h2>
+              <p class="section-subtitle">Prompt snippets are shown in the same typography and spacing language as the extracted design system.</p>
+              <div class="prompt-list"><div class="prompt-card"><strong>Quick Summary</strong><p>Workflow.design is a restrained product-marketing system built from ink, white, and soft grays, with serif accents and flat utility surfaces replacing the usual startup gradient-and-shadow stack.</p></div><div class="prompt-card">
+            <strong>Hero section</strong>
+            <p>Build a full-width white hero with 16px page gutters, a centered light-weight Inter headline, muted 14/21 body copy, and one flat 8px-radius CTA in pale gray.</p>
+          </div><div class="prompt-card">
+            <strong>Format tabs</strong>
+            <p>Create a five-item tab row with 48px-tall text tabs, muted inactive labels, a current tab in solid ink, and a thin animated progress bar under the active item instead of a filled chip.</p>
+          </div><div class="prompt-card">
+            <strong>Mobile menu</strong>
+            <p>Design a full-screen overlay menu with a warm blurred scrim, a white backing plane, 16px side padding, 112px top padding, and grouped vertical link clusters separated by 40px gaps.</p>
+          </div><div class="prompt-card"><strong>Ready-to-Use Prompt</strong><p>Design a landing page in the style of Workflow.design: light-mode-first, near-monochrome, full-width sections, Inter for most UI, Crimson Pro only for quotes or closing persuasion, flat off-white CTAs with 8px radius, no heavy shadows, and large vertical spacing bands that feel quiet and editorial rather than growth-marketing loud.</p></div></div>
+              <div class="split-card" style="margin-top:var(--space-4);">
+    <div>
+      <h3 class="token-heading">Do</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Use ink, white, and pale-gray neutrals as the dominant vocabulary.</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Keep CTA styling flat and calm, with hover handled through small fill changes.</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Introduce the serif voice only where trust, emotion, or reflection matters.</div></div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Don't</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Don&#39;t introduce saturated multi-color gradients or glossy SaaS chrome.</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Don&#39;t rely on heavy shadows to separate layers.</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Don&#39;t over-round everything into pills; Workflow prefers restrained rectangles and occasional asymmetry.</div></div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="source-shell">
+          <article class="panel">
+            <div class="source-header">
+              <div class="file-tabs">
+                <span class="file-tab">design-system.md</span>
+                <span class="file-tab active">design.md</span>
+                <span class="file-tab">Design JSON</span>
+                <span class="file-tab">CSS Variables</span>
+                <span class="file-tab">Design Tokens</span>
+              </div>
+            </div>
+            <div class="source-toolbar">
+              <div class="segmented" role="tablist" aria-label="View Switcher">
+                <button class="is-active" data-view="source" type="button">Source</button>
+                <button data-view="preview" type="button">Preview</button>
+              </div>
+              <div class="toolbar-actions">
+                <button class="ghost-button" id="copyButton" type="button">Copy</button>
+                <a class="ghost-button" href="design.md" download>Open .md</a>
+                <span class="copy-state" id="copyState"></span>
+              </div>
+            </div>
+            <div class="source-body">
+              <pre class="source-view" id="sourceView"># Design System: Workflow.design
+
+## 1. Visual Theme &amp; Atmosphere
+
+Workflow&#39;s marketing site is calm, editorial, and deliberately understated. The system avoids loud SaaS gradients and instead leans on a mostly monochrome palette, roomy full-width bands, and flat product-demo surfaces that let the message and motion carry the page.
+
+- Overall feeling: Quiet, precise, product-led, and reviewer-friendly.
+- Visual density: Spacious sections with long vertical breathing room and sparse chrome.
+- Brand posture: Confident but not flashy; more considered studio tool than growth-hack landing page.
+- Signature motifs: Full-width sections, flat off-white controls, light-weight display type, serif cameos for trust-building moments, and demo modules with soft utility-card styling.
+
+### Key Characteristics
+
+- Near-monochrome interface with one muted approval green accent.
+- Flat surfaces and hairline dividers instead of shadow-heavy depth.
+- Light-weight Inter display paired with selective Crimson Pro editorial moments.
+- Full-width composition with consistent 16px side gutters and large vertical section gaps.
+
+## 2. Color Palette &amp; Roles
+
+Use semantic roles first. Workflow is light-mode-first, with dark ink used as the primary brand anchor and pale neutrals doing most of the UI work.
+
+| Role | Semantic Name | Value | Usage |
+| --- | --- | --- | --- |
+| Primary action | Soft Utility Fill | `#F6F6F6` | Main CTA fill, quiet controls, off-white chips |
+| Accent | Approval Green | `#547E69` | Approval states, positive micro-signals inside demos |
+| Surface | Pure Surface | `#FFFFFF` | Page base, nav background, mobile menu backing |
+| Text | Ink | `#1A1A1A` | Headlines, active tabs, navigation, dividers |
+| Border | Hairline Ink | `rgba(26, 26, 26, 0.12)` | Subtle section rules, tab rails, utility outlines |
+
+### Primary
+
+- `#FFFFFF` is the dominant canvas and keeps the page bright, clinical, and calm.
+- `#1A1A1A` is used everywhere meaningful: headlines, rules, icons, active states, and progress bars.
+
+### Interactive
+
+- Primary CTAs use `#F6F6F6` with dark text; hover shifts to `#ECECEC`.
+- Inactive tabs and secondary text drop to roughly 65% ink opacity instead of changing hue.
+
+### Neutral Scale
+
+- `#F9F9F9` for very light supporting surfaces.
+- `#F6F6F6` for controls and quiet callouts.
+- `#ECECEC` for stronger utility cards and hovered controls.
+- `rgba(26, 26, 26, 0.65)` for muted body copy.
+- `rgba(26, 26, 26, 0.30)` and `rgba(26, 26, 26, 0.12)` for rails, dividers, and soft borders.
+
+### Surface &amp; Overlay
+
+- Main page surface: `#FFFFFF`
+- Elevated card and control surface: `#F6F6F6`
+- Strong utility card surface: `#ECECEC`
+- Warm blur layer: `#F6F4F0`
+- Inverted surface for occasional internal UI moments: `#1A1A1A`
+
+### Shadows &amp; Depth
+
+- Ring border: `0 0 0 1px rgba(26, 26, 26, 0.12)`
+- Card shadow: `none`
+- Focus treatment: Mostly minimal; emphasis comes from tone shifts, rails, and spacing rather than glow.
+
+## 3. Theme Modes
+
+No user-facing light/dark toggle was observed on `https://www.workflow.design/`. The site behaves as a single light theme with occasional inverted dark surfaces inside embedded product imagery and nav states.
+
+### Light Mode
+
+- Background: `#FFFFFF`
+- Surface: `#F6F6F6`
+- Text: `#1A1A1A`
+- Accent: `#547E69`
+- Notes: This is the primary and only explicit mode; the whole marketing system is tuned around pale neutrals and dark ink.
+
+### Dark Mode
+
+- Background: Not observed as a first-class site mode.
+- Surface: Occasional inverted internal surfaces use `#1A1A1A`.
+- Text: Inverted copy tokens exist in CSS as pale off-white.
+- Accent: Approval green remains the same family when used.
+- Notes: Treat dark usage as isolated component inversion, not a full theme.
+
+## 4. Typography Rules
+
+The system is restrained and typographically opinionated without being expressive-for-its-own-sake. Inter does nearly all of the work, then Crimson Pro appears only when the page wants to feel more editorial or more human.
+
+### Font Family
+
+- Primary: `Inter, Arial, sans-serif`
+- Monospace: No product-specific monospace family was observed in the public page UI.
+- OpenType Features: None visibly emphasized; the feel comes from weight and spacing, not feature styling.
+
+### Hierarchy
+
+| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| Hero headline | Inter | `32px` desktop/tablet, `24px` mobile | `300` | `32px` / `24px` | `normal` | Centered, low-drama, almost anti-marketing in tone |
+| Section heading | Inter | `32px` desktop/tablet, `24px` mobile | `300` | `32px` / `24px` | `normal` | Reuses the hero class for visual consistency |
+| Body | Inter | `14px` | `400` | `21px` | `normal` | Muted dark ink at about 65% opacity |
+| Label / Eyebrow | Inter | `12px` to `14px` | `400` to `700` | `12px` to `21px` | `normal` | Used for recording chips, banners, and micro-status UI |
+| Caption / Meta | Inter | `14px` | `400` | `21px` | `normal` | Names, attribution, nav links, quiet metadata |
+
+### Principles
+
+- Keep display text light in weight and short in line count.
+- Reserve the serif voice for pull quotes and end-cap persuasion moments.
+- Let muted opacity handle hierarchy before introducing additional colors.
+
+## 5. Component Stylings
+
+### Buttons and Links
+
+**Primary CTA**
+
+- Background: `#F6F6F6`
+- Text: `#1A1A1A`
+- Common size: `40px` tall with `8px 16px` internal padding
+- Radius: `8px`
+- Text style: `14px / 400 Inter`
+
+**Secondary CTA**
+
+- Background: `#FFFFFF`
+- Text: `#1A1A1A`
+- Ring: `rgba(26, 26, 26, 0.12)`
+- Radius: `8px`
+- Text style: `14px / 400 Inter`
+
+- Text links: Plain dark or muted-dark text with no decorative flourish; nav links stay flat and rely on placement.
+- Hover and active feel: Tone shifts only; no lift, no scale, no blur, no neon outline.
+
+### Cards and Containers
+
+- Surface style: Mostly borderless layouts with a few soft utility cards in `#ECECEC`.
+- Radius: Standard controls use `8px`; demo tiles sometimes use asymmetrical `8px 0 0`.
+- Border: Dividers are subtle ink hairlines rather than heavy container strokes.
+- Shadow or elevation: Nearly always none.
+- Internal spacing: Utility components favor `16px`, `24px`, and `48px`; quote containers use `48px` vertical padding with `24px` gaps.
+
+### Inputs and Interactive Controls
+
+- Input treatment: No public form field system is meaningfully exposed on this page.
+- Focus behavior: Observed focus styling is understated; tabs explicitly keep the shared radius on `:focus-visible`.
+- Selection states: Tabs switch from muted text to solid ink and reveal a 1px timer/progress rule.
+
+### Navigation
+
+- Structure: Fixed top header with stacked announcement capability, inline desktop nav, and a menu-button takeover below desktop widths.
+- Background treatment: White primary layer; mobile open state adds a warm `#F6F4F0` blur veil over a white backing plane.
+- Link style: `14px` Inter, regular weight, no ornament, no underlines.
+- Sticky or scroll behavior: The header is fixed and slides upward on scroll rather than gaining shadow or shrinking.
+
+### Image Treatment
+
+- Screenshot treatment: Crisp product mockups inside flat or off-white cards; no glossy browser chrome.
+- Photography or illustration style: Real people appear mainly in testimonial avatars; product imagery dominates.
+- Border and radius treatment: Media stays clean and mostly square, with asymmetrical rounding used selectively for standout demo tiles.
+
+### Distinctive Components
+
+- Auto-rotating format tabs that use a thin timer bar instead of a filled pill state.
+- Reviewer demo tiles that combine soft-gray surfaces with asymmetrical rounding.
+- Serif pull quotes that interrupt the otherwise system-font-heavy page.
+
+## 6. Layout Principles
+
+### Spacing System
+
+- Base unit: `8px`
+- Repeated spacing values: `8px`, `16px`, `24px`, `40px`, `48px`, `112px`, `144px`
+
+### Grid &amp; Container
+
+- Grid logic: Full-width bands with content aligned to a near-edge gutter rather than a narrow centered column.
+- Max content width: Effectively viewport width minus about `16px` side gutters at desktop, tablet, and mobile.
+- Section spacing: Repeated `144px` vertical gaps on desktop and `112px` on tablet/mobile.
+
+### Whitespace Philosophy
+
+- Whitespace philosophy: Let the page breathe; each story beat gets its own band of vertical air.
+- Alignment tendencies: Sections run full width, but key copy clusters stay centered and visually quiet.
+- Content width behavior: Text can span unusually wide on desktop, which reinforces the editorial calm and avoids card-over-card clutter.
+
+### Border Radius Scale
+
+- Micro: `4px`
+- Standard: `8px`
+- Large: `8px 0 0`
+- Pill: Rarely used; prefer soft rectangles over capsules
+
+## 7. Depth &amp; Elevation
+
+| Level | Treatment | Use |
+| --- | --- | --- |
+| Flat | Transparent or white surfaces with no shadow | Most sections, nav links, page background |
+| Ring | `1px` soft ink divider or rail | Tab rails, subtle utility edges, quiet separation |
+| Card | `#ECECEC` or `#F6F6F6` fill with no shadow | Demo tiles, quiet controls, utility shells |
+| Focus | Minimal visual shift, mostly structural | Keyboard states and active tabs rely on rails/radius more than glow |
+
+### Depth Principles
+
+- Surface hierarchy: Mostly two layers, white page and soft-gray utility surfaces.
+- Shadow language: Avoided almost entirely.
+- Blur, glass, or overlay behavior: Only the mobile navigation overlay meaningfully uses blur.
+- When depth is used versus avoided: Use blur for full-screen state change, not for ordinary component emphasis.
+
+## 8. Do&#39;s and Don&#39;ts
+
+### Do
+
+- Use ink, white, and pale-gray neutrals as the dominant vocabulary.
+- Keep CTA styling flat and calm, with hover handled through small fill changes.
+- Introduce the serif voice only where trust, emotion, or reflection matters.
+
+### Don&#39;t
+
+- Don&#39;t introduce saturated multi-color gradients or glossy SaaS chrome.
+- Don&#39;t rely on heavy shadows to separate layers.
+- Don&#39;t over-round everything into pills; Workflow prefers restrained rectangles and occasional asymmetry.
+
+## 9. Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+| --- | --- | --- |
+| Mobile | `&lt;= 767px` | Headings compress from `32px` to `24px`; overlay menu takes over; stacked feature compositions get taller |
+| Tablet | `768px - 991px` | Desktop-scale typography remains, but nav switches to a menu button and overlay navigation |
+| Desktop | `&gt;= 992px` | Inline nav returns, header height expands to `83px`, and section rhythm opens to `144px` |
+
+### Touch Targets
+
+- Primary nav menu button is `48px` square.
+- Tabs are `48px` tall and CTAs are `40px` tall; preserve the observed proportions even if you choose to enlarge the tap comfort slightly in implementation.
+
+### Collapsing Strategy
+
+- Navigation breaks first at `991px`, moving to a full-screen overlay with grouped link columns and a blurred warm backdrop.
+- Typography holds steady through tablet, then compresses only once the layout hits mobile widths.
+- Section gutters remain close to `16px` across all breakpoints; the page compresses by stacking, not by squeezing content into dense cards.
+
+## 10. Agent Prompt Guide
+
+### Quick Color Reference
+
+- Background: `#FFFFFF`
+- Elevated surface: `#F6F6F6`
+- Heading text: `#1A1A1A`
+- Body text: `rgba(26, 26, 26, 0.65)`
+- Ring / border: `rgba(26, 26, 26, 0.12)`
+- Accent / focus: `#547E69`
+
+### Example Component Prompts
+
+- Hero section: Build a full-width white hero with 16px page gutters, a centered light-weight Inter headline, muted 14/21 body copy, and one flat 8px-radius CTA in pale gray.
+- Format tabs: Create a five-item tab row with 48px-tall text tabs, muted inactive labels, a current tab in solid ink, and a thin animated progress bar under the active item instead of a filled chip.
+- Mobile menu: Design a full-screen overlay menu with a warm blurred scrim, a white backing plane, 16px side padding, 112px top padding, and grouped vertical link clusters separated by 40px gaps.
+
+### Ready-to-Use Prompt
+
+Design a landing page in the style of Workflow.design: light-mode-first, near-monochrome, full-width sections, Inter for most UI, Crimson Pro only for quotes or closing persuasion, flat off-white CTAs with 8px radius, no heavy shadows, and large vertical spacing bands that feel quiet and editorial rather than growth-marketing loud.
+
+### Quick Summary
+
+Workflow.design is a restrained product-marketing system built from ink, white, and soft grays, with serif accents and flat utility surfaces replacing the usual startup gradient-and-shadow stack.
+
+### Iteration Guide
+
+- If a composition feels too decorative, remove color before removing content.
+- If a component feels too generic, introduce asymmetry or a thin timer rail instead of another border or shadow.
+- If a section feels too busy, widen the vertical gap before shrinking typography.
+
+## Interaction Patterns
+
+- The top header is fixed and scroll-reactive; it translates upward instead of thickening or casting shadow.
+- Primary CTA hover changes only the fill from `#F6F6F6` to `#ECECEC`.
+- The tab system communicates activity through a 1px timer bar and muted-versus-solid text, not pill fills.
+- Mobile navigation locks body scroll, adds a warm blur layer, and reveals grouped links in a full-screen overlay.
+
+## Content &amp; Messaging Patterns
+
+- Headlines are short, literal, and problem-solution oriented.
+- CTA language is concise and low-friction.
+- Social proof appears often, but it is embedded into the flow instead of isolated as a loud trust wall.
+- Product framing stays practical: feedback, revisions, approval, simplification, and reviewer ease.
+
+## Observed Pages
+
+- Source: https://www.workflow.design/
+- Sample widths: `1440px`, `768px`, and `390px`
+- Extraction mode: live Chrome CDP session with DOM, computed-style, and interaction-state sampling
+
+## Evidence Notes
+
+- Observed: section-to-section vertical gaps repeat at `144px` on desktop and `112px` on tablet/mobile.
+- Observed: the major nav breakpoint occurs at `991px`, and the headline scale drops at `767px`.
+- Observed: CSS variables expose the same neutral palette seen in rendering, including `#1A1A1A`, `#F6F6F6`, `#ECECEC`, and `#F6F4F0`.
+- Inferred: the site prefers tonal state changes over explicit borders for most controls, except where rails or utility outlines communicate selection.
+</pre>
+              <article class="rendered-view" id="previewView" hidden><section><h2>1. Visual Theme &amp; Atmosphere</h2><p>Workflow&#39;s marketing site is calm, editorial, and deliberately understated. The system avoids loud SaaS gradients and instead leans on a mostly monochrome palette, roomy full-width bands, and flat product-demo surfaces that let the message and motion carry the page.</p><ul><li>Overall feeling: Quiet, precise, product-led, and reviewer-friendly.</li><li>Visual density: Spacious sections with long vertical breathing room and sparse chrome.</li><li>Brand posture: Confident but not flashy; more considered studio tool than growth-hack landing page.</li><li>Signature motifs: Full-width sections, flat off-white controls, light-weight display type, serif cameos for trust-building moments, and demo modules with soft utility-card styling.</li></ul><h3>Key Characteristics</h3><ul><li>Near-monochrome interface with one muted approval green accent.</li><li>Flat surfaces and hairline dividers instead of shadow-heavy depth.</li><li>Light-weight Inter display paired with selective Crimson Pro editorial moments.</li><li>Full-width composition with consistent 16px side gutters and large vertical section gaps.</li></ul></section><section><h2>2. Color Palette &amp; Roles</h2><p>Use semantic roles first. Workflow is light-mode-first, with dark ink used as the primary brand anchor and pale neutrals doing most of the UI work.</p><table><thead><tr><th>Role</th><th>Semantic Name</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td>Primary action</td><td>Soft Utility Fill</td><td><code>#F6F6F6</code></td><td>Main CTA fill, quiet controls, off-white chips</td></tr><tr><td>Accent</td><td>Approval Green</td><td><code>#547E69</code></td><td>Approval states, positive micro-signals inside demos</td></tr><tr><td>Surface</td><td>Pure Surface</td><td><code>#FFFFFF</code></td><td>Page base, nav background, mobile menu backing</td></tr><tr><td>Text</td><td>Ink</td><td><code>#1A1A1A</code></td><td>Headlines, active tabs, navigation, dividers</td></tr><tr><td>Border</td><td>Hairline Ink</td><td><code>rgba(26, 26, 26, 0.12)</code></td><td>Subtle section rules, tab rails, utility outlines</td></tr></tbody></table><h3>Primary</h3><ul><li><code>#FFFFFF</code> is the dominant canvas and keeps the page bright, clinical, and calm.</li><li><code>#1A1A1A</code> is used everywhere meaningful: headlines, rules, icons, active states, and progress bars.</li></ul><h3>Interactive</h3><ul><li>Primary CTAs use <code>#F6F6F6</code> with dark text; hover shifts to <code>#ECECEC</code>.</li><li>Inactive tabs and secondary text drop to roughly 65% ink opacity instead of changing hue.</li></ul><h3>Neutral Scale</h3><ul><li><code>#F9F9F9</code> for very light supporting surfaces.</li><li><code>#F6F6F6</code> for controls and quiet callouts.</li><li><code>#ECECEC</code> for stronger utility cards and hovered controls.</li><li><code>rgba(26, 26, 26, 0.65)</code> for muted body copy.</li><li><code>rgba(26, 26, 26, 0.30)</code> and <code>rgba(26, 26, 26, 0.12)</code> for rails, dividers, and soft borders.</li></ul><h3>Surface &amp; Overlay</h3><ul><li>Main page surface: <code>#FFFFFF</code></li><li>Elevated card and control surface: <code>#F6F6F6</code></li><li>Strong utility card surface: <code>#ECECEC</code></li><li>Warm blur layer: <code>#F6F4F0</code></li><li>Inverted surface for occasional internal UI moments: <code>#1A1A1A</code></li></ul><h3>Shadows &amp; Depth</h3><ul><li>Ring border: <code>0 0 0 1px rgba(26, 26, 26, 0.12)</code></li><li>Card shadow: <code>none</code></li><li>Focus treatment: Mostly minimal; emphasis comes from tone shifts, rails, and spacing rather than glow.</li></ul></section><section><h2>3. Theme Modes</h2><p>No user-facing light/dark toggle was observed on <code>https://www.workflow.design/</code>. The site behaves as a single light theme with occasional inverted dark surfaces inside embedded product imagery and nav states.</p><h3>Light Mode</h3><ul><li>Background: <code>#FFFFFF</code></li><li>Surface: <code>#F6F6F6</code></li><li>Text: <code>#1A1A1A</code></li><li>Accent: <code>#547E69</code></li><li>Notes: This is the primary and only explicit mode; the whole marketing system is tuned around pale neutrals and dark ink.</li></ul><h3>Dark Mode</h3><ul><li>Background: Not observed as a first-class site mode.</li><li>Surface: Occasional inverted internal surfaces use <code>#1A1A1A</code>.</li><li>Text: Inverted copy tokens exist in CSS as pale off-white.</li><li>Accent: Approval green remains the same family when used.</li><li>Notes: Treat dark usage as isolated component inversion, not a full theme.</li></ul></section><section><h2>4. Typography Rules</h2><p>The system is restrained and typographically opinionated without being expressive-for-its-own-sake. Inter does nearly all of the work, then Crimson Pro appears only when the page wants to feel more editorial or more human.</p><h3>Font Family</h3><ul><li>Primary: <code>Inter, Arial, sans-serif</code></li><li>Monospace: No product-specific monospace family was observed in the public page UI.</li><li>OpenType Features: None visibly emphasized; the feel comes from weight and spacing, not feature styling.</li></ul><h3>Hierarchy</h3><table><thead><tr><th>Role</th><th>Font</th><th>Size</th><th>Weight</th><th>Line Height</th><th>Letter Spacing</th><th>Notes</th></tr></thead><tbody><tr><td>Hero headline</td><td>Inter</td><td><code>32px</code> desktop/tablet, <code>24px</code> mobile</td><td><code>300</code></td><td><code>32px</code> / <code>24px</code></td><td><code>normal</code></td><td>Centered, low-drama, almost anti-marketing in tone</td></tr><tr><td>Section heading</td><td>Inter</td><td><code>32px</code> desktop/tablet, <code>24px</code> mobile</td><td><code>300</code></td><td><code>32px</code> / <code>24px</code></td><td><code>normal</code></td><td>Reuses the hero class for visual consistency</td></tr><tr><td>Body</td><td>Inter</td><td><code>14px</code></td><td><code>400</code></td><td><code>21px</code></td><td><code>normal</code></td><td>Muted dark ink at about 65% opacity</td></tr><tr><td>Label / Eyebrow</td><td>Inter</td><td><code>12px</code> to <code>14px</code></td><td><code>400</code> to <code>700</code></td><td><code>12px</code> to <code>21px</code></td><td><code>normal</code></td><td>Used for recording chips, banners, and micro-status UI</td></tr><tr><td>Caption / Meta</td><td>Inter</td><td><code>14px</code></td><td><code>400</code></td><td><code>21px</code></td><td><code>normal</code></td><td>Names, attribution, nav links, quiet metadata</td></tr></tbody></table><h3>Principles</h3><ul><li>Keep display text light in weight and short in line count.</li><li>Reserve the serif voice for pull quotes and end-cap persuasion moments.</li><li>Let muted opacity handle hierarchy before introducing additional colors.</li></ul></section><section><h2>5. Component Stylings</h2><h3>Buttons and Links</h3><p><strong>Primary CTA</strong></p><ul><li>Background: <code>#F6F6F6</code></li><li>Text: <code>#1A1A1A</code></li><li>Common size: <code>40px</code> tall with <code>8px 16px</code> internal padding</li><li>Radius: <code>8px</code></li><li>Text style: <code>14px / 400 Inter</code></li></ul><p><strong>Secondary CTA</strong></p><ul><li>Background: <code>#FFFFFF</code></li><li>Text: <code>#1A1A1A</code></li><li>Ring: <code>rgba(26, 26, 26, 0.12)</code></li><li>Radius: <code>8px</code></li><li>Text style: <code>14px / 400 Inter</code></li></ul><ul><li>Text links: Plain dark or muted-dark text with no decorative flourish; nav links stay flat and rely on placement.</li><li>Hover and active feel: Tone shifts only; no lift, no scale, no blur, no neon outline.</li></ul><h3>Cards and Containers</h3><ul><li>Surface style: Mostly borderless layouts with a few soft utility cards in <code>#ECECEC</code>.</li><li>Radius: Standard controls use <code>8px</code>; demo tiles sometimes use asymmetrical <code>8px 0 0</code>.</li><li>Border: Dividers are subtle ink hairlines rather than heavy container strokes.</li><li>Shadow or elevation: Nearly always none.</li><li>Internal spacing: Utility components favor <code>16px</code>, <code>24px</code>, and <code>48px</code>; quote containers use <code>48px</code> vertical padding with <code>24px</code> gaps.</li></ul><h3>Inputs and Interactive Controls</h3><ul><li>Input treatment: No public form field system is meaningfully exposed on this page.</li><li>Focus behavior: Observed focus styling is understated; tabs explicitly keep the shared radius on <code>:focus-visible</code>.</li><li>Selection states: Tabs switch from muted text to solid ink and reveal a 1px timer/progress rule.</li></ul><h3>Navigation</h3><ul><li>Structure: Fixed top header with stacked announcement capability, inline desktop nav, and a menu-button takeover below desktop widths.</li><li>Background treatment: White primary layer; mobile open state adds a warm <code>#F6F4F0</code> blur veil over a white backing plane.</li><li>Link style: <code>14px</code> Inter, regular weight, no ornament, no underlines.</li><li>Sticky or scroll behavior: The header is fixed and slides upward on scroll rather than gaining shadow or shrinking.</li></ul><h3>Image Treatment</h3><ul><li>Screenshot treatment: Crisp product mockups inside flat or off-white cards; no glossy browser chrome.</li><li>Photography or illustration style: Real people appear mainly in testimonial avatars; product imagery dominates.</li><li>Border and radius treatment: Media stays clean and mostly square, with asymmetrical rounding used selectively for standout demo tiles.</li></ul><h3>Distinctive Components</h3><ul><li>Auto-rotating format tabs that use a thin timer bar instead of a filled pill state.</li><li>Reviewer demo tiles that combine soft-gray surfaces with asymmetrical rounding.</li><li>Serif pull quotes that interrupt the otherwise system-font-heavy page.</li></ul></section><section><h2>6. Layout Principles</h2><h3>Spacing System</h3><ul><li>Base unit: <code>8px</code></li><li>Repeated spacing values: <code>8px</code>, <code>16px</code>, <code>24px</code>, <code>40px</code>, <code>48px</code>, <code>112px</code>, <code>144px</code></li></ul><h3>Grid &amp; Container</h3><ul><li>Grid logic: Full-width bands with content aligned to a near-edge gutter rather than a narrow centered column.</li><li>Max content width: Effectively viewport width minus about <code>16px</code> side gutters at desktop, tablet, and mobile.</li><li>Section spacing: Repeated <code>144px</code> vertical gaps on desktop and <code>112px</code> on tablet/mobile.</li></ul><h3>Whitespace Philosophy</h3><ul><li>Whitespace philosophy: Let the page breathe; each story beat gets its own band of vertical air.</li><li>Alignment tendencies: Sections run full width, but key copy clusters stay centered and visually quiet.</li><li>Content width behavior: Text can span unusually wide on desktop, which reinforces the editorial calm and avoids card-over-card clutter.</li></ul><h3>Border Radius Scale</h3><ul><li>Micro: <code>4px</code></li><li>Standard: <code>8px</code></li><li>Large: <code>8px 0 0</code></li><li>Pill: Rarely used; prefer soft rectangles over capsules</li></ul></section><section><h2>7. Depth &amp; Elevation</h2><table><thead><tr><th>Level</th><th>Treatment</th><th>Use</th></tr></thead><tbody><tr><td>Flat</td><td>Transparent or white surfaces with no shadow</td><td>Most sections, nav links, page background</td></tr><tr><td>Ring</td><td><code>1px</code> soft ink divider or rail</td><td>Tab rails, subtle utility edges, quiet separation</td></tr><tr><td>Card</td><td><code>#ECECEC</code> or <code>#F6F6F6</code> fill with no shadow</td><td>Demo tiles, quiet controls, utility shells</td></tr><tr><td>Focus</td><td>Minimal visual shift, mostly structural</td><td>Keyboard states and active tabs rely on rails/radius more than glow</td></tr></tbody></table><h3>Depth Principles</h3><ul><li>Surface hierarchy: Mostly two layers, white page and soft-gray utility surfaces.</li><li>Shadow language: Avoided almost entirely.</li><li>Blur, glass, or overlay behavior: Only the mobile navigation overlay meaningfully uses blur.</li><li>When depth is used versus avoided: Use blur for full-screen state change, not for ordinary component emphasis.</li></ul></section><section><h2>8. Do&#39;s and Don&#39;ts</h2><h3>Do</h3><ul><li>Use ink, white, and pale-gray neutrals as the dominant vocabulary.</li><li>Keep CTA styling flat and calm, with hover handled through small fill changes.</li><li>Introduce the serif voice only where trust, emotion, or reflection matters.</li></ul><h3>Don&#39;t</h3><ul><li>Don&#39;t introduce saturated multi-color gradients or glossy SaaS chrome.</li><li>Don&#39;t rely on heavy shadows to separate layers.</li><li>Don&#39;t over-round everything into pills; Workflow prefers restrained rectangles and occasional asymmetry.</li></ul></section><section><h2>9. Responsive Behavior</h2><h3>Breakpoints</h3><table><thead><tr><th>Name</th><th>Width</th><th>Key Changes</th></tr></thead><tbody><tr><td>Mobile</td><td><code>&lt;= 767px</code></td><td>Headings compress from <code>32px</code> to <code>24px</code>; overlay menu takes over; stacked feature compositions get taller</td></tr><tr><td>Tablet</td><td><code>768px - 991px</code></td><td>Desktop-scale typography remains, but nav switches to a menu button and overlay navigation</td></tr><tr><td>Desktop</td><td><code>&gt;= 992px</code></td><td>Inline nav returns, header height expands to <code>83px</code>, and section rhythm opens to <code>144px</code></td></tr></tbody></table><h3>Touch Targets</h3><ul><li>Primary nav menu button is <code>48px</code> square.</li><li>Tabs are <code>48px</code> tall and CTAs are <code>40px</code> tall; preserve the observed proportions even if you choose to enlarge the tap comfort slightly in implementation.</li></ul><h3>Collapsing Strategy</h3><ul><li>Navigation breaks first at <code>991px</code>, moving to a full-screen overlay with grouped link columns and a blurred warm backdrop.</li><li>Typography holds steady through tablet, then compresses only once the layout hits mobile widths.</li><li>Section gutters remain close to <code>16px</code> across all breakpoints; the page compresses by stacking, not by squeezing content into dense cards.</li></ul></section><section><h2>10. Agent Prompt Guide</h2><h3>Quick Color Reference</h3><ul><li>Background: <code>#FFFFFF</code></li><li>Elevated surface: <code>#F6F6F6</code></li><li>Heading text: <code>#1A1A1A</code></li><li>Body text: <code>rgba(26, 26, 26, 0.65)</code></li><li>Ring / border: <code>rgba(26, 26, 26, 0.12)</code></li><li>Accent / focus: <code>#547E69</code></li></ul><h3>Example Component Prompts</h3><ul><li>Hero section: Build a full-width white hero with 16px page gutters, a centered light-weight Inter headline, muted 14/21 body copy, and one flat 8px-radius CTA in pale gray.</li><li>Format tabs: Create a five-item tab row with 48px-tall text tabs, muted inactive labels, a current tab in solid ink, and a thin animated progress bar under the active item instead of a filled chip.</li><li>Mobile menu: Design a full-screen overlay menu with a warm blurred scrim, a white backing plane, 16px side padding, 112px top padding, and grouped vertical link clusters separated by 40px gaps.</li></ul><h3>Ready-to-Use Prompt</h3><p>Design a landing page in the style of Workflow.design: light-mode-first, near-monochrome, full-width sections, Inter for most UI, Crimson Pro only for quotes or closing persuasion, flat off-white CTAs with 8px radius, no heavy shadows, and large vertical spacing bands that feel quiet and editorial rather than growth-marketing loud.</p><h3>Quick Summary</h3><p>Workflow.design is a restrained product-marketing system built from ink, white, and soft grays, with serif accents and flat utility surfaces replacing the usual startup gradient-and-shadow stack.</p><h3>Iteration Guide</h3><ul><li>If a composition feels too decorative, remove color before removing content.</li><li>If a component feels too generic, introduce asymmetry or a thin timer rail instead of another border or shadow.</li><li>If a section feels too busy, widen the vertical gap before shrinking typography.</li></ul></section><section><h2>Interaction Patterns</h2><ul><li>The top header is fixed and scroll-reactive; it translates upward instead of thickening or casting shadow.</li><li>Primary CTA hover changes only the fill from <code>#F6F6F6</code> to <code>#ECECEC</code>.</li><li>The tab system communicates activity through a 1px timer bar and muted-versus-solid text, not pill fills.</li><li>Mobile navigation locks body scroll, adds a warm blur layer, and reveals grouped links in a full-screen overlay.</li></ul></section><section><h2>Content &amp; Messaging Patterns</h2><ul><li>Headlines are short, literal, and problem-solution oriented.</li><li>CTA language is concise and low-friction.</li><li>Social proof appears often, but it is embedded into the flow instead of isolated as a loud trust wall.</li><li>Product framing stays practical: feedback, revisions, approval, simplification, and reviewer ease.</li></ul></section><section><h2>Observed Pages</h2><ul><li>Source: https://www.workflow.design/</li><li>Sample widths: <code>1440px</code>, <code>768px</code>, and <code>390px</code></li><li>Extraction mode: live Chrome CDP session with DOM, computed-style, and interaction-state sampling</li></ul></section><section><h2>Evidence Notes</h2><ul><li>Observed: section-to-section vertical gaps repeat at <code>144px</code> on desktop and <code>112px</code> on tablet/mobile.</li><li>Observed: the major nav breakpoint occurs at <code>991px</code>, and the headline scale drops at <code>767px</code>.</li><li>Observed: CSS variables expose the same neutral palette seen in rendering, including <code>#1A1A1A</code>, <code>#F6F6F6</code>, <code>#ECECEC</code>, and <code>#F6F4F0</code>.</li><li>Inferred: the site prefers tonal state changes over explicit borders for most controls, except where rails or utility outlines communicate selection.</li></ul></section></article>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const sourceView = document.getElementById("sourceView");
+      const previewView = document.getElementById("previewView");
+      const copyButton = document.getElementById("copyButton");
+      const copyState = document.getElementById("copyState");
+      const viewButtons = document.querySelectorAll("[data-view]");
+
+      function setActiveView(view) {
+        const showSource = view === "source";
+        sourceView.hidden = !showSource;
+        previewView.hidden = showSource;
+        viewButtons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.view === view);
+        });
+      }
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => setActiveView(button.dataset.view));
+      });
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(sourceView.textContent || "");
+          copyState.textContent = "Copied";
+        } catch (error) {
+          copyState.textContent = "Clipboard unavailable";
+        }
+
+        setTimeout(() => {
+          copyState.textContent = "";
+        }, 1400);
+      });
+    </script>
+  </body>
+</html>

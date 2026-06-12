@@ -8,7 +8,9 @@
 
 - 路由根目录使用 `src/pages`
 - 不使用 `features/`
-- 页面私有组件、query、schema、form、table 配置都尽量和路由目录放在一起
+- 每个叶子页面优先使用目录结构，如 `src/pages/_app/home/index.tsx`
+- 页面私有组件、query、schema、form、table 配置都放在该页面目录下
+- layout 实现放 `src/layouts/<layout-name>/`，`route.tsx` 只负责选择 layout
 - `services/` 继续负责请求、QueryClient、后续 `tRPC` client 等请求基础设施
 - `stores/` 只放客户端状态，不放服务端数据
 
@@ -32,6 +34,7 @@
 ```txt
 src/
   pages/            # TanStack 文件路由
+  layouts/          # 布局实现，一个 layout 一个目录
   services/         # 请求层、QueryClient、后续 tRPC client
   stores/           # 本地 UI 状态
   components/       # 全局复用组件与 ui 组件

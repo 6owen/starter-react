@@ -2,7 +2,7 @@ import { Link, createFileRoute, useRouterState } from '@tanstack/react-router'
 
 import { Button } from '@/components/ui/button'
 
-export const Route = createFileRoute('/_app/custom-route')({
+export const Route = createFileRoute('/_app/custom-route/')({
   component: CustomRoutePage,
   head: () => ({
     meta: [{ title: 'Custom Route | Starter React' }],
@@ -46,7 +46,7 @@ function CustomRoutePage() {
               runtime assembly step.
             </p>
             <Button asChild>
-              <Link to="/">Back Home</Link>
+              <Link to="/home">Back Home</Link>
             </Button>
           </div>
         </div>

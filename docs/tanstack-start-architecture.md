@@ -44,6 +44,44 @@
 
 以后如果有用户页、订单页、设置页，它们的私有组件、查询定义、表单定义、表格列定义，都优先跟着各自路由目录走。
 
+补充约束：
+
+- 叶子页面优先使用目录形式，而不是直接写成 `about.tsx`
+- 推荐写法是 `pages/.../xxx/index.tsx`
+- 这个页面自己的私有文件继续放在同目录下的 `-components`、`-queries.ts`、`-schema.ts` 等
+- 不要把多个页面的私有实现堆回父级目录，比如不要放在 `pages/_app/-components`
+
+### 2.1 layout 实现和 route 文件分开
+
+这一条现在恢复明确约定：
+
+- `src/pages/**/route.tsx` 只负责 TanStack 路由入口和 layout 选择
+- 真正的 layout 实现放 `src/layouts/<layout-name>/`
+- 一个 layout 一个目录
+- layout 自己的 `header`、`footer`、`sidebar` 等放在该 layout 目录下的 `components/`
+
+推荐模式：
+
+```txt
+src/layouts/
+  studio-tool/
+    index.tsx
+    components/
+      studio-tool-header.tsx
+      studio-tool-footer.tsx
+```
+
+对应 route 文件保持很薄：
+
+```txt
+src/pages/_app/route.tsx
+```
+
+这里的职责边界是：
+
+- `pages/` 决定“这个路由组用哪个 layout”
+- `layouts/` 负责“这个 layout 本身怎么渲染”
+
 ### 3. 页面私有文件和路由目录放在一起
 
 页面相关代码统一放在对应路由目录下，不提前抽到全局目录。
@@ -58,6 +96,18 @@
 - `-utils.ts`：页面私有辅助函数
 
 这里使用 `-` 前缀，是为了让 TanStack Router 的文件路由生成器忽略这些非路由文件。
+
+例如：
+
+```txt
+src/pages/_app/home/
+  index.tsx
+  -components/
+    hero-card.tsx
+    stat-card.tsx
+  -queries.ts
+  -schema.ts
+```
 
 ### 4. `services/` 继续作为所有请求相关内容的归属目录
 
@@ -91,7 +141,21 @@ src/
     _app/
       route.tsx
       index.tsx
-      about.tsx
+      home/
+        index.tsx
+        -components/
+          feature-card.tsx
+          store-metric-card.tsx
+        -queries.ts
+      about/
+        index.tsx
+        -schema.ts
+      custom-route/
+        index.tsx
+      login/
+        index.tsx
+      unauthorized/
+        index.tsx
       users/
         route.tsx
         index.tsx
@@ -109,6 +173,15 @@ src/
         profile.tsx
         security.tsx
         -components/
+  layouts/
+    studio-tool/
+      index.tsx
+      navigation.ts
+      components/
+        studio-tool-header.tsx
+        studio-tool-footer.tsx
+    immersive/
+      index.tsx
   services/
     http.ts
     query-client.ts
@@ -151,6 +224,32 @@ src/
 - 页面私有组件和页面私有 schema/query/form/table 定义
 
 一句话：`pages/` 负责页面壳子和页面就近逻辑。
+
+补充：
+
+- route 文件可以组合 `Outlet`
+- route 文件可以导入 `src/layouts/*`
+- 但不建议把完整 header/footer/mobile nav 逻辑长期堆在 `route.tsx` 里
+
+### `layouts/`
+
+放可复用或明确命名的布局实现。
+
+适合放：
+
+- marketing layout
+- app layout
+- dashboard layout
+- immersive/fullscreen layout
+- 这些 layout 的 header/footer/sidebar/nav 组件
+
+推荐约定：
+
+- 一个 layout 一个目录
+- layout 入口文件统一用 `index.tsx`
+- layout 私有组件放 `components/`
+
+一句话：`layouts/` 负责“壳子怎么长什么样”，`pages/` 负责“哪个路由组使用哪个壳子”。
 
 ### `routers/`
 
@@ -483,12 +582,19 @@ tRPC 接进来以后，也不要绕过 Query 单独搞一套数据流。
 
 迁移到 TanStack Start 后，当前这几层不再保留：
 
-- `src/routers`
-- `src/layouts`
 - `src/pages/**/page.tsx` 这种旧入口约定
+- `src/routers` 里旧 `react-router-dom` 风格的集中路由注册代码
 - 通过 `react-router-dom + vite-plugin-pages` 组装路由的旧方式
 
-这些能力都会并入新的 `src/pages` 文件路由体系。
+要保留的有：
+
+- `src/layouts`
+- `src/layouts/<layout-name>/components`
+- `src/routers/auth.ts`
+- `src/routers/guards.ts`
+- 其他只负责权限判断、redirect helper、auth 上下文解析的辅助文件
+
+这些辅助能力继续存在，但不再承担 route tree 注册职责。
 
 ## 一句话版本
 
